@@ -1,0 +1,50 @@
+{
+  "extName": {
+    "message": "Pause Resume Audio Fade",
+    "description": "Extension name shown in the store and toolbar."
+  },
+  "extDescription": {
+    "message": "YouTube 視聴時、一時停止・再開・シークの音量を短くフェードして耳への負担を和らげます。",
+    "description": "Short description shown in the store and extensions page."
+  },
+  "popupHeading": {
+    "message": "Pause / Resume Fade",
+    "description": "Popup title heading."
+  },
+  "popupSubtitle": {
+    "message": "一括／個別でオン・オフできます",
+    "description": "Popup subtitle."
+  },
+  "masterToggle": {
+    "message": "すべて有効",
+    "description": "Master on/off switch label."
+  },
+  "fadeOutTitle": {
+    "message": "フェードアウト（一時停止）",
+    "description": "Fade-out feature label."
+  },
+  "fadeInTitle": {
+    "message": "フェードイン（再開）",
+    "description": "Fade-in feature label."
+  },
+  "seekTitle": {
+    "message": "シーク時フェードイン",
+    "description": "Seek fade-in feature label."
+  },
+  "durationLabel": {
+    "message": "時間",
+    "description": "Label for a fade duration value."
+  },
+  "seekNote": {
+    "message": "再生中にタイムラインを動かしたとき、到着位置からフェードインします（時間は上のフェードインと同じ）。",
+    "description": "Explanation for the seek fade-in feature."
+  },
+  "reloadHint": {
+    "message": "変更後は YouTube タブをリロードしてください。",
+    "description": "Hint shown at the bottom of the popup."
+  },
+  "unitMs": {
+    "message": "ms",
+    "description": "Millisecond unit shown next to duration values."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "extName": {
+    "message": "Pause Resume Audio Fade",
+    "description": "Extension name shown in the store and toolbar."
+  },
+  "extDescription": {
+    "message": "Smoothly fade YouTube audio when you pause, resume, or seek, so sudden volume changes are gentler.",
+    "description": "Short description shown in the store and extensions page."
+  },
+  "popupHeading": {
+    "message": "Pause / Resume Fade",
+    "description": "Popup title heading."
+  },
+  "popupSubtitle": {
+    "message": "Toggle all or each feature",
+    "description": "Popup subtitle."
+  },
+  "masterToggle": {
+    "message": "Enable all",
+    "description": "Master on/off switch label."
+  },
+  "fadeOutTitle": {
+    "message": "Fade out (pause)",
+    "description": "Fade-out feature label."
+  },
+  "fadeInTitle": {
+    "message": "Fade in (resume)",
+    "description": "Fade-in feature label."
+  },
+  "seekTitle": {
+    "message": "Fade in on seek",
+    "description": "Seek fade-in feature label."
+  },
+  "durationLabel": {
+    "message": "Duration",
+    "description": "Label for a fade duration value."
+  },
+  "seekNote": {
+    "message": "When you move the timeline during playback, audio fades in from the new position (same duration as fade-in).",
+    "description": "Explanation for the seek fade-in feature."
+  },
+  "reloadHint": {
+    "message": "After changing settings, reload the YouTube tab.",
+    "description": "Hint shown at the bottom of the popup."
+  },
+  "unitMs": {
+    "message": "ms",
+    "description": "Millisecond unit shown next to duration values."
+  }
+}

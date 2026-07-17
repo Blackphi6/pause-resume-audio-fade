@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="extName">Pause Resume Audio Fade</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1 data-i18n="popupHeading">Pause / Resume Fade</h1>
+      <p class="sub" data-i18n="popupSubtitle">Toggle all or each feature</p>
+    </header>
+
+    <label class="row toggle master">
+      <span data-i18n="masterToggle">Enable all</span>
+      <input type="checkbox" id="enabled" checked />
+    </label>
+
+    <section class="field" id="fadeOutSection">
+      <label class="row toggle compact">
+        <span data-i18n="fadeOutTitle">Fade out (pause)</span>
+        <input type="checkbox" id="fadeOutEnabled" checked />
+      </label>
+      <span class="label-row">
+        <span class="muted" data-i18n="durationLabel">Duration</span>
+        <strong id="fadeOutLabel">350 ms</strong>
+      </span>
+      <input type="range" id="fadeOutMs" min="100" max="3000" step="50" value="350" />
+    </section>
+
+    <section class="field" id="fadeInSection">
+      <label class="row toggle compact">
+        <span data-i18n="fadeInTitle">Fade in (resume)</span>
+        <input type="checkbox" id="fadeInEnabled" checked />
+      </label>
+      <span class="label-row">
+        <span class="muted" data-i18n="durationLabel">Duration</span>
+        <strong id="fadeInLabel">300 ms</strong>
+      </span>
+      <input type="range" id="fadeInMs" min="100" max="3000" step="50" value="300" />
+    </section>
+
+    <section class="field" id="seekSection">
+      <label class="row toggle compact">
+        <span data-i18n="seekTitle">Fade in on seek</span>
+        <input type="checkbox" id="seekFadeInEnabled" checked />
+      </label>
+      <p class="feature-note" data-i18n="seekNote">
+        When you move the timeline during playback, audio fades in from the new position.
+      </p>
+    </section>
+
+    <p class="hint" data-i18n="reloadHint">After changing settings, reload the YouTube tab.</p>
+    <script src="popup.js"></script>
+  </body>
+</html>

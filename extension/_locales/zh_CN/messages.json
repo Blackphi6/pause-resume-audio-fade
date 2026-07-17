@@ -1,0 +1,50 @@
+{
+  "extName": {
+    "message": "暂停恢复音频淡入淡出",
+    "description": "Extension name shown in the store and toolbar."
+  },
+  "extDescription": {
+    "message": "在 YouTube 暂停、恢复或跳转时对音量做短暂淡入淡出，减轻突然的音量变化。",
+    "description": "Short description shown in the store and extensions page."
+  },
+  "popupHeading": {
+    "message": "暂停 / 恢复淡入淡出",
+    "description": "Popup title heading."
+  },
+  "popupSubtitle": {
+    "message": "可整体或单独开关",
+    "description": "Popup subtitle."
+  },
+  "masterToggle": {
+    "message": "全部启用",
+    "description": "Master on/off switch label."
+  },
+  "fadeOutTitle": {
+    "message": "淡出（暂停时）",
+    "description": "Fade-out feature label."
+  },
+  "fadeInTitle": {
+    "message": "淡入（恢复时）",
+    "description": "Fade-in feature label."
+  },
+  "seekTitle": {
+    "message": "跳转时淡入",
+    "description": "Seek fade-in feature label."
+  },
+  "durationLabel": {
+    "message": "时长",
+    "description": "Label for a fade duration value."
+  },
+  "seekNote": {
+    "message": "播放时拖动进度条后，会从到达的位置淡入（时长与上面的淡入相同）。",
+    "description": "Explanation for the seek fade-in feature."
+  },
+  "reloadHint": {
+    "message": "更改设置后，请重新加载 YouTube 标签页。",
+    "description": "Hint shown at the bottom of the popup."
+  },
+  "unitMs": {
+    "message": "毫秒",
+    "description": "Millisecond unit shown next to duration values."
+  }
+}
