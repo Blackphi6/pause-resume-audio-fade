@@ -1,6 +1,6 @@
 # Chrome ウェブストア提出情報
 
-対象バージョン: **1.4.1**
+対象バージョン: **1.5.0**
 
 **ストアの掲載情報（概要・説明）の貼り付け専用は [`STORE_PASTE.md`](STORE_PASTE.md) です。** こちらの長い原稿は、プライバシーやテスト手順など、それ以外用です。
 
@@ -14,17 +14,22 @@
 
 貼る文章は全部 [`STORE_PASTE.md`](STORE_PASTE.md) にあります。言語を切り替えて、概要と説明を枠ごとコピーしてください。
 
-**1.4.1 却下（キーワード スパム）:** 説明に配信サービス名を長く並べないでください。`STORE_PASTE.md` は修正済みです。再提出前に English を含め4言語すべて差し替えてください。
+**1.4.1 却下歴（キーワード スパム）:** 説明にサービス名を長く並べて却下されました。`STORE_PASTE.md` の説明文は名称を並べない書き方に直してあります。**サイト名を追加するたびに、説明文にサイト名を書き足さないでください。** 単一目的・ホスト権限の理由（審査担当向け・非公開）だけ、対応サイトが変わったら更新します。
+
+**今回（1.5.0・X/Instagram追加）で変わったところ:**
+- ホスト権限（Privacy Practices）に X・Instagram が増えた → 権限の理由の文言を更新（下記）
+- 単一目的の文言を「配信サイト」→「動画サイト」に広げた（SNS上の動画も対象なため）
+- 説明文の【今回の更新】は「対応する動画サイトをさらに増やしました」のみ。X/Instagramの名前は書きません
 
 | ダッシュボードの欄 | このファイルの場所 | 貼る内容 |
 |--------------------|--------------------|----------|
-| パッケージ（左メニュー） | （ファイル） | リポジトリ直下の `youtube-pause-resume-fade-1.4.1.zip` |
-| パッケージの概要 | [`STORE_PASTE.md`](STORE_PASTE.md) | その言語の「概要」 |
-| 説明（詳細） | [`STORE_PASTE.md`](STORE_PASTE.md) | その言語の「説明」 |
+| パッケージ（左メニュー） | （ファイル） | リポジトリ直下の `youtube-pause-resume-fade-1.5.0.zip` |
+| パッケージの概要 | [`STORE_PASTE.md`](STORE_PASTE.md) | その言語の「概要」（編集不可・ZIPから自動） |
+| 説明（詳細） | [`STORE_PASTE.md`](STORE_PASTE.md) | その言語の「説明」を貼り直す（【今回の更新】が変わっている） |
 | English / 简体中文 / 繁體中文 | [`STORE_PASTE.md`](STORE_PASTE.md) | 言語を切り替えて同じファイルから貼る |
-| スクリーンショット | （画像ファイル） | `assets/store/screenshots/` の各言語3枚 |
-| 単一目的・サイトアクセスの理由 | **「3. Privacy Practices」** | 対応サイトを増やしたので、ここも更新 |
-| テスト手順（左メニュー「テスト手順」） | **「6. Test Instructions」** | 審査担当者向け。利用者向けではない |
+| スクリーンショット | （画像ファイル） | 変更なし。差し替え不要 |
+| 単一目的・ホスト権限が必要な理由 | **「3. Privacy Practices」** | X/Instagram が増えたので、ここは必ず更新 |
+| テスト手順（左メニュー「テスト手順」） | **「6. Test Instructions」** | 審査担当者向け。X/Instagramでの確認手順を追加 |
 
 左メニューの「パッケージ」で ZIP を上げたあと、「審査のため送信」を押すと確認画面が出ます。そこに審査担当向けのメモ欄が出ることがありますが、それはストアの利用者には見えません。利用者に見せる更新内容は、いまの画面の **説明** に書きます。
 
@@ -60,8 +65,10 @@ Developer Dashboard では主言語を **English** に設定し、追加言語�
 
 ### 概要／短い説明
 
+**編集不可。** ZIP 内の `manifest.json`（`extDescription`）から自動で入ります。
+
 ```text
-ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードし、急な音の切れや立ち上がりをやわらげます。
+ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
 ```
 
 ### 詳細な説明（16,000文字以内）
@@ -75,7 +82,7 @@ Developer Dashboard では主言語を **English** に設定し、追加言語�
 
 【今回の更新】
 
-ブラウザで見る動画の対応範囲を広げました。一部のサイトでうまく動かないことがあったので直しています。
+対応する動画サイトをさらに増やしました。
 
 使い始めるときは、いま見ているタブをいちど再読み込みしてください。
 
@@ -135,9 +142,9 @@ Developer Dashboard では主言語を **English** に設定し、追加言語�
 本拡張機能は各配信サービスの公式製品ではありません。
 ```
 
-### バージョン1.4.1の更新内容（説明の先頭に入れる）
+### バージョン1.5.0の更新内容（説明の先頭に入れる）
 
-別欄はありません。上の「詳細な説明」の【今回の更新】に、すでに同じ文章が入っています。説明欄を枠ごと貼り直せば足ります。
+別欄はありません。上の「詳細な説明」の【今回の更新】に、すでに同じ文章が入っています（X・Instagram を追加。説明にはサイト名を書きません）。説明欄を枠ごと貼り直せば足ります。
 
 ### バージョン1.4.0のリリースノート
 
@@ -245,7 +252,7 @@ YouTube / Netflix / TVer / ABEMA などの再生画面と、拡張機能のポ�
 ### 単一目的
 
 ```text
-対応する配信サイトのメインプレイヤーで、一時停止・再生再開・シーク時の音量を短時間フェードさせ、急な音量変化を緩和すること。
+対応する動画サイトのメインプレイヤーで、一時停止・再生再開・シーク時の音量を短時間フェードさせ、急な音量変化を緩和すること。
 ```
 
 ### storage 権限の理由
@@ -259,7 +266,7 @@ YouTube / Netflix / TVer / ABEMA などの再生画面と、拡張機能のポ�
 プライバシー画面の「ホスト権限が必要な理由」は **1つだけ** です。サイトごとに枠は出ません。次の枠を、いま入っている途中の文章と入れ替えて全部貼ります。
 
 ```text
-YouTube、Netflix、Prime Video、TVer、ABEMA ほか、対応する配信サイトのメインプレイヤーで、一時停止・再生再開・シークを検知し、音量フェードを適用するために必要です。プレイヤーがサブドメインやフレームにある場合も含みます。Amazonは買い物ページ全体ではなく動画視聴ページのみです。ページ内容・視聴履歴・アカウント情報の収集には使用しません。指定した視聴ホスト以外では動作しません。
+YouTube、Netflix、Prime Video、TVer、ABEMA、X（Twitter）、Instagram ほか、対応する動画サイトのメインプレイヤーで、一時停止・再生再開・シークを検知し、音量フェードを適用するために必要です。プレイヤーがサブドメインやフレームにある場合も含みます。Amazonは買い物ページ全体ではなく動画視聴ページのみです。X・Instagramでも動画プレイヤーの音量制御のみに使用し、投稿内容・DM・フィードの取得には使用しません。ページ内容・投稿内容・視聴履歴・アカウント情報の収集には使用しません。指定した視聴ホスト以外では動作しません。
 ```
 
 下のサイト別の枠は、もし審査画面でホストが1つずつ出たとき用の控えです。いまの画面では使いません。
@@ -300,6 +307,12 @@ ABEMAの本編・生配信プレイヤーへ音量フェードを適用するた
 
 ```text
 各サービスのブラウザ向けプレイヤーへ、同じ一時停止／再開／シーク時の音量フェードを適用するために必要です。指定した視聴ホスト以外では動作しません。
+```
+
+#### X / Instagram（`x.com` / `twitter.com` / `www.instagram.com`）
+
+```text
+投稿内に埋め込まれた動画プレイヤーへ、同じ一時停止／再開／シーク時の音量フェードを適用するために必要です。投稿内容、DM、フィード、アカウント情報の取得には使用しません。動画の音量制御のみを行います。
 ```
 
 ### リモートコード
@@ -426,8 +439,9 @@ https://github.com/Blackphi6/pause-resume-audio-fade/issues
 5. 再生中にタイムライン上の別の位置へ移動します。移動先で約300msのフェードインが適用されます。
 6. ツールバーの拡張機能アイコンを開き、3機能の個別オン／オフ、全体オン／オフ、フェード時間の変更を確認します。
 7. 無料で確認する場合は https://tver.jp/ または https://abema.tv/ の再生ページでも、同じ一時停止・再開を確認できます。
+8. https://x.com/ または https://www.instagram.com/ で、動画付きの投稿を開き、一時停止・再開しても同じフェードが適用されることを確認できます（ログイン不要で見られる投稿で確認可能）。拡張は投稿内の動画プレイヤーの音量のみを操作し、投稿内容やアカウント情報は取得しません。
 
-音声を確認できる環境が必要です。YouTube / TVer / ABEMA へのログインは不要です。
+音声を確認できる環境が必要です。YouTube / TVer / ABEMA / X / Instagram へのログインは不要です。
 ```
 
 審査メモ:
@@ -438,7 +452,7 @@ https://github.com/Blackphi6/pause-resume-audio-fade/issues
 
 ## 7. 提出前チェック
 
-- [ ] `youtube-pause-resume-fade-1.4.1.zip` のルート直下に `manifest.json` がある
+- [ ] `youtube-pause-resume-fade-1.5.0.zip` のルート直下に `manifest.json` がある
 - [ ] `python scripts/validate_extension.py` が成功する
 - [ ] プライバシーポリシーURLがログアウト状態でも開く
 - [ ] 128×128アイコンを登録
@@ -468,93 +482,13 @@ https://github.com/Blackphi6/pause-resume-audio-fade/issues
 Pause Resume Audio Fade
 ```
 
-概要 / Summary:
+概要 / Summary: **編集不可。** ZIP 内の `manifest.json`（`extDescription`）から自動で入ります。現在の文言:
 
 ```text
-Softly fade audio on pause, resume, and seek on YouTube, Netflix, Prime Video, TVer, Abema, and other streaming sites.
+Softly fade audio on pause, resume, and seek in browser video players.
 ```
 
-詳細な説明 / Detailed description:
-
-```text
-A Chrome extension that briefly fades audio when you pause, resume, or seek in the browser.
-
-Pausing a video can cut the sound off abruptly, and resuming can feel like the volume jumps back suddenly. Pause Resume Audio Fade smooths these sudden volume changes with short fades for a gentler listening experience.
-
-[What's new]
-
-The fade now works on more videos you watch in the browser, including YouTube, Netflix, Prime Video, TVer, and ABEMA. Pausing, resuming, and seeking should sound a little gentler.
-
-TVer and ABEMA did not fade reliably before. That is fixed.
-
-After this update, reload the tab you are watching.
-
-[Features]
-
-- Fade out on pause
-  Gradually lowers the volume right after you pause, then stops.
-
-- Fade in on resume
-  Brings the volume back from near-silence to its previous level when you resume.
-
-- Fade in on seek
-  When you jump to another position on the timeline during playback, the audio ramps up from the new position.
-
-- Per-feature on/off
-  Toggle fade-out, resume fade-in, and seek fade-in independently.
-
-- Master on/off
-  Disable or enable every feature with a single switch.
-
-- Adjustable fade duration
-  Set the fade-out and fade-in durations anywhere from 100 to 3,000 milliseconds.
-
-[Defaults]
-
-- Fade out: 350 ms
-- Fade in: 300 ms
-- Fade in on seek: On
-
-The defaults are short enough to stay responsive while still softening abrupt volume changes.
-
-[Supported sites]
-
-- YouTube / YouTube Music / YouTube mobile web
-- Netflix
-- Amazon Prime Video
-- TVer / ABEMA
-- Hulu / Disney+ / U-NEXT / DAZN / FOD / NHK Plus / Lemino / TELASA / WOWOW / d Anime Store
-- Niconico / Twitch / Bilibili / Crunchyroll
-
-It does not run on Amazon shopping pages — only video watch pages.
-
-YouTube, TVer, and ABEMA have been verified. On some DRM services the fade may not apply if the site ignores JavaScript volume changes. After updating, reload the tab you are watching.
-
-[Privacy]
-
-This extension does not collect personal information, account data, watch history, video titles, video URLs, cookies, or audio/video content.
-
-There is no communication with external servers, no analytics, no ad SDK, and no crash reporting. It only stores your feature on/off choices and fade durations, saved locally in Chrome storage on your device.
-
-[Permissions]
-
-- storage
-  Used to save your feature toggles and fade durations locally on your device.
-
-- Access to supported streaming sites
-  Required to apply the audio fade to each site's main player. It does not run outside the listed watch hosts.
-
-[How to use]
-
-1. Install the extension.
-2. Reload the tab you are watching.
-3. Play, pause, and seek videos as usual.
-4. Adjust each feature and the fade durations from the toolbar icon if you like.
-
-This extension is an independent project and is not an official product of any streaming service.
-```
-
-更新内容は上の説明の [What's new] に入っています。別欄はありません。
+詳細な説明 / Detailed description: **[`STORE_PASTE.md`](STORE_PASTE.md) の English 版をそのまま使用します**（サイト名を並べる旧版は 1.4.1 のキーワード スパム却下の原因になったため、ここには残していません）。更新内容は本文の `[What's new]` に入っています。別欄はありません。
 
 ### 日本語
 
@@ -564,10 +498,10 @@ This extension is an independent project and is not an official product of any s
 Pause Resume Audio Fade
 ```
 
-概要:
+概要: **編集不可。** ZIP 内の `manifest.json`（`extDescription`）から自動で入ります。現在の文言:
 
 ```text
-YouTube、Netflix、Prime Video、TVer、ABEMA などの一時停止・再開・シーク時に音量を短くフェードし、急な音の切れや立ち上がりをやわらげます。
+ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
 ```
 
 詳細な説明:「1. Store Listing」の日本語版本文をそのまま使用します（【今回の更新】込み）。別欄はありません。
@@ -580,93 +514,13 @@ YouTube、Netflix、Prime Video、TVer、ABEMA などの一時停止・再開・
 暂停恢复音频淡入淡出
 ```
 
-概要 / 摘要:
+概要 / 摘要: **編集不可。** ZIP 内の `manifest.json`（`extDescription`）から自動で入ります。現在の文言:
 
 ```text
-在 YouTube、Netflix、Prime Video、TVer、Abema 等网站暂停、恢复或跳转时对音量做短暂淡入淡出，让听感更柔和。
+在浏览器视频播放器暂停、恢复或跳转时对音量做短暂淡入淡出。
 ```
 
-详细说明:
-
-```text
-这是一款 Chrome 扩展，在浏览器视频播放器暂停、恢复或跳转时对音量进行短暂的淡入淡出。
-
-暂停视频时声音可能会突然中断，恢复播放时又会感觉音量骤然变大。暂停恢复音频淡入淡出通过短暂的淡变来缓和这些突然的音量变化，带来更柔和的收听体验。
-
-【本次更新】
-
-现在不只 YouTube，Netflix、Prime Video、TVer、ABEMA 等浏览器里看的视频也能用了。暂停、恢复、跳转时，声音不容易突然断开或突然变大。
-
-TVer 和 ABEMA 以前有时不太好用，这次已经修好。
-
-更新后，请把正在看的标签页重新加载一次。
-
-【主要功能】
-
-- 暂停时淡出
-  暂停后先让音量逐渐降低，然后再停止。
-
-- 恢复时淡入
-  恢复播放时，将音量从接近静音逐渐回到原来的水平。
-
-- 跳转时淡入
-  播放过程中跳到时间轴上的其他位置后，声音会从到达的位置逐渐增强。
-
-- 单项开关
-  可分别开启或关闭淡出、恢复淡入、跳转淡入。
-
-- 总开关
-  用一个开关即可统一启用或停用所有功能。
-
-- 可调节淡变时长
-  淡出与淡入的时长均可在 100 至 3,000 毫秒之间调节。
-
-【默认设置】
-
-- 淡出:350 毫秒
-- 淡入:300 毫秒
-- 跳转时淡入:开启
-
-默认值足够短，既能保持响应灵敏，又能缓和突然的音量变化。
-
-【支持的网站】
-
-- YouTube / YouTube Music / YouTube 移动网页版
-- Netflix
-- Amazon Prime Video
-- TVer / ABEMA
-- Hulu / Disney+ / U-NEXT / DAZN / FOD / NHK+ / Lemino / TELASA / WOWOW / d动画商店
-- ニコニコ / Twitch / Bilibili / Crunchyroll
-
-不会在 Amazon 购物页面运行，仅在视频观看页生效。
-
-已在 YouTube、TVer、ABEMA 上确认可用。部分 DRM 服务如果忽略 JavaScript 音量更改，淡变可能无效。更新后请重新加载正在观看的标签页。
-
-【隐私】
-
-本扩展不收集个人信息、账号信息、观看记录、视频标题、视频网址、Cookie，或音视频内容。
-
-不与任何外部服务器通信,没有数据分析、广告 SDK 或崩溃上报。仅保存功能开关与淡变时长,这些设置保存在您设备本地的 Chrome 存储中。
-
-【权限说明】
-
-- storage
-  用于在您的设备本地保存功能开关与淡变时长。
-
-- 访问受支持的流媒体网站
-  用于对各站点的主播放器应用音量淡变。仅在清单列出的观看主机上运行。
-
-【使用方法】
-
-1. 安装扩展。
-2. 重新加载正在观看的标签页。
-3. 像平常一样播放、暂停和跳转视频。
-4. 如需调整,可从工具栏图标中设置各项功能与淡变时长。
-
-本扩展为独立项目,并非各流媒体服务的官方产品。
-```
-
-更新内容已写在上方说明的【本次更新】里。没有单独的栏。
+详细说明: **[`STORE_PASTE.md`](STORE_PASTE.md) の 简体中文版をそのまま使用します**（サイト名を並べる旧版は 1.4.1 のキーワード スパム却下の原因になったため、ここには残していません）。更新内容は本文の【本次更新】に入っています。別欄はありません。
 
 ### 繁體中文
 
@@ -682,85 +536,5 @@ TVer 和 ABEMA 以前有时不太好用，这次已经修好。
 在 YouTube、Netflix、Prime Video、TVer、Abema 等網站暫停、恢復或跳轉時對音量做短暫淡入淡出，讓聽感更柔和。
 ```
 
-詳細說明:
-
-```text
-這是一款 Chrome 擴充功能，在瀏覽器影片播放器暫停、恢復或跳轉時對音量進行短暫的淡入淡出。
-
-暫停影片時聲音可能會突然中斷，恢復播放時又會覺得音量驟然變大。暫停恢復音訊淡入淡出透過短暫的淡變來緩和這些突然的音量變化，帶來更柔和的聆聽體驗。
-
-【本次更新】
-
-現在不只 YouTube，Netflix、Prime Video、TVer、ABEMA 等瀏覽器裡看的影片也能用了。暫停、恢復、跳轉時，聲音比較不容易突然中斷或突然變大。
-
-TVer 和 ABEMA 以前有時不太好用，這次已經修好。
-
-更新後，請把正在看的分頁重新載入一次。
-
-【主要功能】
-
-- 暫停時淡出
-  暫停後先讓音量逐漸降低，然後再停止。
-
-- 恢復時淡入
-  恢復播放時，將音量從接近靜音逐漸回到原本的水準。
-
-- 跳轉時淡入
-  播放過程中跳到時間軸上的其他位置後，聲音會從到達的位置逐漸增強。
-
-- 個別開關
-  可分別開啟或關閉淡出、恢復淡入、跳轉淡入。
-
-- 總開關
-  用一個開關即可統一啟用或停用所有功能。
-
-- 可調整淡變時長
-  淡出與淡入的時長皆可在 100 至 3,000 毫秒之間調整。
-
-【預設設定】
-
-- 淡出:350 毫秒
-- 淡入:300 毫秒
-- 跳轉時淡入:開啟
-
-預設值夠短,既能保持反應靈敏,又能緩和突然的音量變化。
-
-【支援的網站】
-
-- YouTube / YouTube Music / YouTube 行動網頁版
-- Netflix
-- Amazon Prime Video
-- TVer / ABEMA
-- Hulu / Disney+ / U-NEXT / DAZN / FOD / NHK+ / Lemino / TELASA / WOWOW / d動畫商店
-- ニコニコ / Twitch / Bilibili / Crunchyroll
-
-不會在 Amazon 購物頁面執行，僅在影片觀看頁生效。
-
-已在 YouTube、TVer、ABEMA 上確認可用。部分 DRM 服務若忽略 JavaScript 音量變更，淡變可能無效。更新後請重新載入正在觀看的分頁。
-
-【隱私】
-
-本擴充功能不會收集個人資訊、帳號資訊、觀看紀錄、影片標題、影片網址、Cookie,或音訊/影片內容。
-
-不會與任何外部伺服器通訊,沒有數據分析、廣告 SDK 或當機回報。僅儲存功能開關與淡變時長,這些設定會儲存在您裝置本機的 Chrome 儲存空間中。
-
-【權限說明】
-
-- storage
-  用於在您的裝置本機儲存功能開關與淡變時長。
-
-- 存取支援的串流網站
-  用於對各站台的主播放器套用音量淡變。僅在清單列出的觀看主機上執行。
-
-【使用方法】
-
-1. 安裝擴充功能。
-2. 重新載入正在觀看的分頁。
-3. 像平常一樣播放、暫停和跳轉影片。
-4. 如需調整,可從工具列圖示中設定各項功能與淡變時長。
-
-本擴充功能為獨立專案,並非各串流服務的官方產品。
-```
-
-更新內容已寫在上方說明的【本次更新】裡。沒有單獨的欄。
+詳細說明: **[`STORE_PASTE.md`](STORE_PASTE.md) の 繁體中文版をそのまま使用します**（サイト名を並べる旧版は 1.4.1 のキーワード スパム却下の原因になったため、ここには残していません）。更新內容は本文の【本次更新】に入っています。別欄はありません。
 

@@ -1,9 +1,9 @@
-# ストア貼り付け専用（1.4.2）
+# ストア貼り付け専用（1.5.0）
 
 ダッシュボード「ストアの掲載情報」へ、**グレーの枠の中だけ**コピーします。
 ` ```text ` という文字は貼らないでください。
 
-**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.4.2 の ZIP をアップロード** してください（すでに修正済み）。
+**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.5.0 の ZIP をアップロード** してください（すでに修正済み）。
 
 **説明（長文）だけ**、下の枠を4言語ぶん貼り直します。サイト名を長く並べないでください（キーワード スパム）。
 
@@ -13,10 +13,10 @@
 
 ### パッケージの概要
 
-**編集不可。** ZIP 1.4.2 を上げると、次の文に自動で変わります。
+**編集不可。** ZIP 1.5.0 を上げると、次の文に自動で変わります。
 
 ```text
-ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードし、急な音の切れや立ち上がりをやわらげます。
+ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
 ```
 
 （English 既定: `Softly fade audio on pause, resume, and seek in browser video players.`）
@@ -30,7 +30,7 @@
 
 【今回の更新】
 
-ブラウザで見る動画の対応範囲を広げました。一部のサイトでうまく動かないことがあったので直しています。
+対応する動画サイトをさらに増やしました。
 
 使い始めるときは、いま見ているタブをいちど再読み込みしてください。
 
@@ -98,7 +98,7 @@
 
 ### Package summary
 
-**Read-only on the dashboard.** Upload ZIP 1.4.2; it becomes:
+**Read-only on the dashboard.** Upload ZIP 1.5.0; it becomes:
 
 ```text
 Softly fade audio on pause, resume, and seek in browser video players.
@@ -113,7 +113,7 @@ Pausing a video can cut the sound off abruptly, and resuming can feel like the v
 
 [What's new]
 
-Support for more browser-based video players. Reliability fixes for sites where the fade did not work consistently. Reload the tab you are watching after updating.
+Support for more browser-based video players. Reload the tab you are watching after updating.
 
 [Features]
 
@@ -179,7 +179,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.4.2 を上げると自動で変わります。
+**編集不可。** ZIP 1.5.0 を上げると自動で変わります。
 
 ### 说明（ここだけ手で貼る）
 
@@ -190,7 +190,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-扩大了浏览器视频的适用范围。修复了部分网站效果不稳定的问题。更新后请重新加载正在观看的标签页。
+扩大了支持的视频网站范围。更新后请重新加载正在观看的标签页。
 
 【主要功能】
 
@@ -256,7 +256,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.4.2 を上げると自動で変わります。
+**編集不可。** ZIP 1.5.0 を上げると自動で変わります。
 
 ### 說明（ここだけ手で貼る）
 
@@ -267,7 +267,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-擴大了瀏覽器影片的適用範圍。修正了部分網站效果不穩定的問題。更新後請重新載入正在觀看的分頁。
+擴大了支援的影片網站範圍。更新後請重新載入正在觀看的分頁。
 
 【主要功能】
 
