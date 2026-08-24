@@ -67,6 +67,9 @@ ALLOWED_HOST_MARKERS = (
     "bilibili.com",
     "bilibili.tv",
     "crunchyroll.com",
+    "x.com",
+    "twitter.com",
+    "instagram.com",
 )
 
 REQUIRED_HOST_MARKERS = (

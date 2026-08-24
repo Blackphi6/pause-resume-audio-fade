@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "__MSG_extName__",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "__MSG_extDescription__",
   "default_locale": "en",
   "permissions": ["storage"],
@@ -68,7 +68,10 @@
         "https://www.bilibili.com/*",
         "https://*.bilibili.com/*",
         "https://www.bilibili.tv/*",
-        "https://www.crunchyroll.com/*"
+        "https://www.crunchyroll.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://www.instagram.com/*"
       ],
       "js": ["page-bridge.js"],
       "css": ["hud.css"],
@@ -122,7 +125,10 @@
         "https://www.bilibili.com/*",
         "https://*.bilibili.com/*",
         "https://www.bilibili.tv/*",
-        "https://www.crunchyroll.com/*"
+        "https://www.crunchyroll.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://www.instagram.com/*"
       ],
       "js": ["fade-inject.js"],
       "run_at": "document_start",
