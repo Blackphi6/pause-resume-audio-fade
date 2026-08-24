@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and toolbar."
   },
   "extDescription": {
-    "message": "Smoothly fade YouTube audio when you pause, resume, or seek, so sudden volume changes are gentler.",
+    "message": "Softly fade audio on pause, resume, and seek in browser video players.",
     "description": "Short description shown in the store and extensions page."
   },
   "popupHeading": {
@@ -14,6 +14,10 @@
   "popupSubtitle": {
     "message": "Toggle all or each feature",
     "description": "Popup subtitle."
+  },
+  "sitesNote": {
+    "message": "Works on browser-based video players.",
+    "description": "Short list of supported streaming sites."
   },
   "masterToggle": {
     "message": "Enable all",
@@ -40,8 +44,16 @@
     "description": "Explanation for the seek fade-in feature."
   },
   "reloadHint": {
-    "message": "After changing settings, reload the YouTube tab.",
+    "message": "After changing settings, reload the tab you are watching.",
     "description": "Hint shown at the bottom of the popup."
+  },
+  "debugHudTitle": {
+    "message": "Debug overlay",
+    "description": "Toggle for on-screen fade debug HUD."
+  },
+  "debugHudNote": {
+    "message": "Shows FADE OUT / FADE IN on screen so you can confirm the fade is running.",
+    "description": "Explanation for the debug overlay toggle."
   },
   "unitMs": {
     "message": "ms",

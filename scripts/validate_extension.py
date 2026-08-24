@@ -17,6 +17,7 @@ REQUIRED = [
     "popup.html",
     "popup.js",
     "popup.css",
+    "hud.css",
     "icons/icon16.png",
     "icons/icon48.png",
     "icons/icon128.png",
@@ -37,8 +38,44 @@ FORBIDDEN = [
     (re.compile(r"chrome\.tabs\b"), "chrome.tabs"),
     (re.compile(r"google-analytics|gtag\(|mixpanel|sentry\.io|amplitude", re.I), "analytics"),
     (re.compile(r"postMessage\([^)]*,\s*['\"]\*['\"]"), "postMessage(*, *)"),
-    (re.compile(r"https?://(?!www\.youtube\.com|m\.youtube\.com|music\.youtube\.com)"), "external URL"),
+    (re.compile(r"https?://"), "external URL"),
 ]
+
+ALLOWED_HOST_MARKERS = (
+    "youtube.com",
+    "youtube-nocookie.com",
+    "netflix.com",
+    "primevideo.com",
+    "amazon.",
+    "tver.jp",
+    "abema.tv",
+    "abema-tv.com",
+    "hulu.jp",
+    "hulu.com",
+    "disneyplus.com",
+    "unext.jp",
+    "dazn.com",
+    "fujitv.co.jp",
+    "plus.nhk.jp",
+    "nhk-ondemand.jp",
+    "lemino.docomo.ne.jp",
+    "telasa.jp",
+    "wowow.co.jp",
+    "animestore.docomo.ne.jp",
+    "nicovideo.jp",
+    "twitch.tv",
+    "bilibili.com",
+    "bilibili.tv",
+    "crunchyroll.com",
+)
+
+REQUIRED_HOST_MARKERS = (
+    "youtube.com",
+    "netflix.com",
+    "primevideo.com",
+    "tver.jp",
+    "abema.tv",
+)
 
 
 def main() -> int:
@@ -83,6 +120,7 @@ def main() -> int:
         "extDescription",
         "popupHeading",
         "popupSubtitle",
+        "sitesNote",
         "masterToggle",
         "fadeOutTitle",
         "fadeInTitle",
@@ -90,17 +128,31 @@ def main() -> int:
         "durationLabel",
         "seekNote",
         "reloadHint",
+        "debugHudTitle",
+        "debugHudNote",
         "unitMs",
     }
     assert required_keys.issubset(base_keys), required_keys - base_keys
     for code in locale_codes:
         keys = load_keys(code)
         assert keys == base_keys, f"{code} key mismatch: {base_keys ^ keys}"
+        desc = json.loads((locales_dir / code / "messages.json").read_text(encoding="utf-8"))
+        assert len(desc["extDescription"]["message"]) <= 132, f"{code} extDescription too long"
 
+    match_lists = []
     for script in manifest["content_scripts"]:
-        assert script.get("all_frames") is False
-        for m in script["matches"]:
-            assert m.startswith("https://") and "youtube.com" in m
+        assert script.get("all_frames") is True
+        matches = script["matches"]
+        assert matches, "content_scripts.matches empty"
+        assert "<all_urls>" not in matches
+        for m in matches:
+            assert m.startswith("https://") and m.endswith("/*"), m
+            assert any(h in m for h in ALLOWED_HOST_MARKERS), m
+        joined = " ".join(matches)
+        for host in REQUIRED_HOST_MARKERS:
+            assert host in joined, f"missing host {host}"
+        match_lists.append(matches)
+    assert match_lists and all(m == match_lists[0] for m in match_lists)
 
     worlds = {tuple(s["js"]): s.get("world", "ISOLATED") for s in manifest["content_scripts"]}
     assert ("fade-inject.js",) in worlds and worlds[("fade-inject.js",)] == "MAIN"
@@ -118,12 +170,23 @@ def main() -> int:
         if path.name == "fade-inject.js":
             assert "isEditableTarget" in text
             assert "isMainVideo" in text
+            assert "findMainVideo" in text
+            assert "isMobileSite" in text
+            assert "isEmeLikely" in text
+            assert "Math.abs(video.volume - next) < 0.05" in text
+            assert "Math.abs(video.volume - next) >" not in text
+            assert "player-container" in text
+            assert "atvwebplayersdk-player-container" in text
             assert "CustomEvent" in text or "__prf_settings_" in text
             assert "data-prf-k" in text
+            assert "touchstart" in text
         if path.name == "page-bridge.js":
             assert "chrome.runtime.id" in text
             assert "CustomEvent" in text
             assert "storage.sync.clear" in text
+            assert "prf_mobile_chip" in text
+            assert "mobile-topbar-header" in text
+            assert "youtube" in text
         if path.name == "popup.js":
             assert "chrome.storage.local" in text
             assert "storage.sync.clear" in text

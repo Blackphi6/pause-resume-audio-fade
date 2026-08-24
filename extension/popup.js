@@ -3,6 +3,7 @@ const DEFAULTS = {
   fadeOutEnabled: true,
   fadeInEnabled: true,
   seekFadeInEnabled: true,
+  debugHud: false,
   fadeOutMs: 350,
   fadeInMs: 300,
 };
@@ -41,6 +42,7 @@ const enabledEl = document.getElementById("enabled");
 const fadeOutEnabledEl = document.getElementById("fadeOutEnabled");
 const fadeInEnabledEl = document.getElementById("fadeInEnabled");
 const seekFadeInEnabledEl = document.getElementById("seekFadeInEnabled");
+const debugHudEl = document.getElementById("debugHud");
 const fadeOutEl = document.getElementById("fadeOutMs");
 const fadeInEl = document.getElementById("fadeInMs");
 const fadeOutLabel = document.getElementById("fadeOutLabel");
@@ -48,6 +50,7 @@ const fadeInLabel = document.getElementById("fadeInLabel");
 const fadeOutSection = document.getElementById("fadeOutSection");
 const fadeInSection = document.getElementById("fadeInSection");
 const seekSection = document.getElementById("seekSection");
+const debugSection = document.getElementById("debugSection");
 
 function clampMs(n) {
   return Math.min(3000, Math.max(100, Math.round(Number(n) || 0)));
@@ -72,6 +75,9 @@ function syncDisabled() {
   seekFadeInEnabledEl.disabled = !master;
   fadeOutEl.disabled = !master || !fadeOutEnabledEl.checked;
   fadeInEl.disabled = !master || !fadeInEnabledEl.checked;
+  // Debug overlay stays available even when master is off (to verify injection).
+  if (debugSection) debugSection.classList.remove("is-dimmed");
+  debugHudEl.disabled = false;
 }
 
 /** Persist only whitelisted preference keys (no PII). */
@@ -81,6 +87,7 @@ function save() {
     fadeOutEnabled: Boolean(fadeOutEnabledEl.checked),
     fadeInEnabled: Boolean(fadeInEnabledEl.checked),
     seekFadeInEnabled: Boolean(seekFadeInEnabledEl.checked),
+    debugHud: Boolean(debugHudEl.checked),
     fadeOutMs: clampMs(fadeOutEl.value),
     fadeInMs: clampMs(fadeInEl.value),
   });
@@ -116,6 +123,7 @@ function applyStored(stored) {
     typeof fadeInEnabled === "boolean" ? fadeInEnabled : DEFAULTS.fadeInEnabled;
   seekFadeInEnabledEl.checked =
     typeof seekFadeInEnabled === "boolean" ? seekFadeInEnabled : DEFAULTS.seekFadeInEnabled;
+  debugHudEl.checked = typeof stored.debugHud === "boolean" ? stored.debugHud : DEFAULTS.debugHud;
   fadeOutEl.value = String(fadeOutMs);
   fadeInEl.value = String(fadeInMs);
   syncLabels();
@@ -125,7 +133,13 @@ function applyStored(stored) {
 function sanitizePrefs(raw) {
   const out = { ...DEFAULTS };
   if (!raw || typeof raw !== "object") return out;
-  for (const key of ["enabled", "fadeOutEnabled", "fadeInEnabled", "seekFadeInEnabled"]) {
+  for (const key of [
+    "enabled",
+    "fadeOutEnabled",
+    "fadeInEnabled",
+    "seekFadeInEnabled",
+    "debugHud",
+  ]) {
     if (typeof raw[key] === "boolean") out[key] = raw[key];
   }
   for (const key of ["fadeOutMs", "fadeInMs"]) {
@@ -142,6 +156,7 @@ function loadPrefs() {
     "fadeOutEnabled",
     "fadeInEnabled",
     "seekFadeInEnabled",
+    "debugHud",
     "fadeOutMs",
     "fadeInMs",
   ];
@@ -180,7 +195,7 @@ enabledEl.addEventListener("change", () => {
   save();
 });
 
-for (const el of [fadeOutEnabledEl, fadeInEnabledEl, seekFadeInEnabledEl]) {
+for (const el of [fadeOutEnabledEl, fadeInEnabledEl, seekFadeInEnabledEl, debugHudEl]) {
   el.addEventListener("change", () => {
     syncDisabled();
     save();

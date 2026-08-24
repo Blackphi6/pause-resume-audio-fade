@@ -1,0 +1,51 @@
+/* Isolated-world chip: sit in YouTube's own topbar (Orion-safe). */
+#prf_mobile_chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  margin: 0 4px;
+  padding: 0 8px;
+  border-radius: 20px;
+  background: #ff3b3b;
+  color: #fff;
+  font: 700 11px/1 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: 0.04em;
+  pointer-events: auto;
+}
+
+/* YouTube 以外: トップバーが無いので画面端へ */
+body > #prf_mobile_chip {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 2147483646;
+  margin: 0;
+}
+
+#prf_mobile_chip[data-state="skip"] {
+  background: #8a6d28;
+}
+
+#prf_mobile_chip[data-state="in"] {
+  background: #2a7a46;
+}
+
+#prf_mobile_toast {
+  position: fixed;
+  left: 8px;
+  right: 8px;
+  top: 52px;
+  z-index: 2147483646;
+  pointer-events: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(10, 12, 16, 0.92);
+  color: #f2f4f7;
+  border: 1px solid rgba(255, 77, 77, 0.65);
+  font: 12px/1.35 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: pre-wrap;
+  word-break: break-word;
+  display: none;
+}

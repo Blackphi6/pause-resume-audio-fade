@@ -39,6 +39,12 @@ h1 {
   font-size: 12px;
 }
 
+.sites {
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
 .row,
 .field {
   display: flex;

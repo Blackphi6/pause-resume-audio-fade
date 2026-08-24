@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and toolbar."
   },
   "extDescription": {
-    "message": "在 YouTube 暫停、恢復或跳轉時對音量做短暫淡入淡出，減輕突然的音量變化。",
+    "message": "在瀏覽器影片播放器暫停、恢復或跳轉時對音量做短暫淡入淡出。",
     "description": "Short description shown in the store and extensions page."
   },
   "popupHeading": {
@@ -14,6 +14,10 @@
   "popupSubtitle": {
     "message": "可整體或個別開關",
     "description": "Popup subtitle."
+  },
+  "sitesNote": {
+    "message": "適用於瀏覽器中的影片播放器。",
+    "description": "Short list of supported streaming sites."
   },
   "masterToggle": {
     "message": "全部啟用",
@@ -40,8 +44,16 @@
     "description": "Explanation for the seek fade-in feature."
   },
   "reloadHint": {
-    "message": "變更設定後，請重新載入 YouTube 分頁。",
+    "message": "變更設定後，請重新載入正在觀看的分頁。",
     "description": "Hint shown at the bottom of the popup."
+  },
+  "debugHudTitle": {
+    "message": "除錯疊加層",
+    "description": "Toggle for on-screen fade debug HUD."
+  },
+  "debugHudNote": {
+    "message": "在畫面上顯示 FADE OUT / FADE IN，用來確認淡變是否生效。",
+    "description": "Explanation for the debug overlay toggle."
   },
   "unitMs": {
     "message": "毫秒",

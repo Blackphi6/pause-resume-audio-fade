@@ -8,18 +8,28 @@
    */
   const TOKEN = chrome.runtime.id;
   const EVENT_SETTINGS = `__prf_settings_${TOKEN}`;
+  const EVENT_HUD = `__prf_hud_${TOKEN}`;
   const ATTR = "data-prf-k";
+  const CHIP_ID = "prf_mobile_chip";
+  const TOAST_ID = "prf_mobile_toast";
 
   const DEFAULTS = Object.freeze({
     enabled: true,
     fadeOutEnabled: true,
     fadeInEnabled: true,
     seekFadeInEnabled: true,
+    debugHud: false,
     fadeOutMs: 350,
     fadeInMs: 300,
   });
 
-  const BOOL_KEYS = ["enabled", "fadeOutEnabled", "fadeInEnabled", "seekFadeInEnabled"];
+  const BOOL_KEYS = [
+    "enabled",
+    "fadeOutEnabled",
+    "fadeInEnabled",
+    "seekFadeInEnabled",
+    "debugHud",
+  ];
   const MS_KEYS = ["fadeOutMs", "fadeInMs"];
   const PREF_KEYS = [...BOOL_KEYS, ...MS_KEYS];
   const LEGACY_DURATION = Object.freeze({ fadeOutMs: 800, fadeInMs: 1000 });
@@ -34,6 +44,7 @@
       fadeOutEnabled: DEFAULTS.fadeOutEnabled,
       fadeInEnabled: DEFAULTS.fadeInEnabled,
       seekFadeInEnabled: DEFAULTS.seekFadeInEnabled,
+      debugHud: DEFAULTS.debugHud,
       fadeOutMs: DEFAULTS.fadeOutMs,
       fadeInMs: DEFAULTS.fadeInMs,
     };
@@ -150,5 +161,126 @@
   window.addEventListener(`__prf_hello_${TOKEN}`, () => {
     lastPublishJson = "";
     publishFromLocal();
+  });
+
+  /**
+   * Orion-safe HUD: isolated world injects into YouTube's mobile topbar
+   * (same approach as Music Mode for YouTube), not a MAIN-world overlay.
+   */
+  let hudEnabled = false;
+  let toastTimer = 0;
+  let chipPoll = 0;
+
+  function ensureToast() {
+    let toast = document.getElementById(TOAST_ID);
+    if (toast) return toast;
+    toast = document.createElement("div");
+    toast.id = TOAST_ID;
+    (document.documentElement || document.body).appendChild(toast);
+    return toast;
+  }
+
+  function showIsolatedToast(title, detail) {
+    if (!hudEnabled) return;
+    const toast = ensureToast();
+    toast.textContent = detail ? `${title}\n${detail}` : title;
+    toast.style.display = "block";
+    if (toastTimer) window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      toast.style.display = "none";
+      toastTimer = 0;
+    }, 2400);
+    const chip = document.getElementById(CHIP_ID);
+    if (chip) {
+      const state = /skip/i.test(title) ? "skip" : /in/i.test(title) ? "in" : "out";
+      chip.setAttribute("data-state", state);
+      chip.textContent = /skip/i.test(title) ? "SKIP" : /in/i.test(title) ? "IN" : "OUT";
+    }
+  }
+
+  function placeChip() {
+    if (!hudEnabled) {
+      document.getElementById(CHIP_ID)?.remove();
+      document.getElementById(TOAST_ID)?.remove();
+      return true;
+    }
+    if (document.getElementById(CHIP_ID)) return true;
+
+    const hosts = [
+      ".mobile-topbar-header div.mobile-topbar-header-content",
+      ".mobile-topbar-header",
+      "ytm-mobile-topbar-renderer",
+      "ytd-masthead #end",
+      "#masthead-container #end",
+    ];
+    let host = null;
+    for (const sel of hosts) {
+      host = document.querySelector(sel);
+      if (host) break;
+    }
+    // YouTube はトップバー待ち。他サイトは body へ固定配置。
+    if (!host) {
+      if (/(?:^|\.)youtube(?:-nocookie)?\.com$/i.test(location.hostname || "")) return false;
+      host = document.body || document.documentElement;
+    }
+    if (!host) return false;
+
+    const chip = document.createElement("div");
+    chip.id = CHIP_ID;
+    chip.className = "icon-button topbar-menu-button-avatar-button";
+    chip.textContent = "PRF";
+    chip.title = "Pause Resume Audio Fade debug";
+    host.insertBefore(chip, host.lastElementChild || null);
+
+    new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        m.removedNodes.forEach((n) => {
+          if (n && n.id === CHIP_ID) placeChip();
+        });
+      }
+    }).observe(host, { childList: true, subtree: true });
+    return true;
+  }
+
+  function startChipLoop() {
+    if (chipPoll) return;
+    let n = 0;
+    chipPoll = window.setInterval(() => {
+      n += 1;
+      if (placeChip() || n >= 80) {
+        window.clearInterval(chipPoll);
+        chipPoll = 0;
+      }
+    }, 500);
+  }
+
+  function setHudEnabled(on) {
+    hudEnabled = Boolean(on);
+    if (hudEnabled) {
+      startChipLoop();
+      placeChip();
+      showIsolatedToast("PRF debug", "isolated HUD ready");
+    } else {
+      if (chipPoll) {
+        window.clearInterval(chipPoll);
+        chipPoll = 0;
+      }
+      document.getElementById(CHIP_ID)?.remove();
+      document.getElementById(TOAST_ID)?.remove();
+    }
+  }
+
+  chrome.storage.local.get({ debugHud: false }, (stored) => {
+    setHudEnabled(stored.debugHud);
+  });
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area !== "local" || !changes.debugHud) return;
+    setHudEnabled(changes.debugHud.newValue);
+  });
+
+  window.addEventListener(EVENT_HUD, (event) => {
+    const detail = event && event.detail;
+    if (!detail || detail.v !== 1) return;
+    showIsolatedToast(String(detail.title || "PRF"), detail.note || "");
   });
 })();

@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and toolbar."
   },
   "extDescription": {
-    "message": "在 YouTube 暂停、恢复或跳转时对音量做短暂淡入淡出，减轻突然的音量变化。",
+    "message": "在浏览器视频播放器暂停、恢复或跳转时对音量做短暂淡入淡出。",
     "description": "Short description shown in the store and extensions page."
   },
   "popupHeading": {
@@ -14,6 +14,10 @@
   "popupSubtitle": {
     "message": "可整体或单独开关",
     "description": "Popup subtitle."
+  },
+  "sitesNote": {
+    "message": "适用于浏览器中的视频播放器。",
+    "description": "Short list of supported streaming sites."
   },
   "masterToggle": {
     "message": "全部启用",
@@ -40,8 +44,16 @@
     "description": "Explanation for the seek fade-in feature."
   },
   "reloadHint": {
-    "message": "更改设置后，请重新加载 YouTube 标签页。",
+    "message": "更改设置后，请重新加载正在观看的标签页。",
     "description": "Hint shown at the bottom of the popup."
+  },
+  "debugHudTitle": {
+    "message": "调试叠加层",
+    "description": "Toggle for on-screen fade debug HUD."
+  },
+  "debugHudNote": {
+    "message": "在画面上显示 FADE OUT / FADE IN，用来确认淡变是否生效。",
+    "description": "Explanation for the debug overlay toggle."
   },
   "unitMs": {
     "message": "毫秒",

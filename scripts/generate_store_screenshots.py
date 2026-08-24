@@ -28,7 +28,7 @@ LOCALES = {
         "eyebrow": "PAUSE RESUME AUDIO FADE",
         "badge": "ACTUAL UI",
         "slides": [
-            ("Softer pauses.\nGentler resumes.", "Smooth sudden audio changes while watching YouTube."),
+            ("Softer pauses.\nGentler resumes.", "Smooth sudden audio changes on YouTube, TVer, ABEMA, and more."),
             ("Three fades.\nOne simple control.", "Pause, resume, and seek — together or independently."),
             ("Set the timing\nthat feels right.", "Adjust fade-out and fade-in from 100 to 3,000 ms."),
         ],
@@ -37,7 +37,7 @@ LOCALES = {
         "eyebrow": "PAUSE RESUME AUDIO FADE",
         "badge": "実際のUI",
         "slides": [
-            ("やさしく止まり、\nやさしく戻る。", "YouTube視聴中の急な音量変化をなめらかに。"),
+            ("やさしく止まり、\nやさしく戻る。", "YouTube、TVer、ABEMA などの急な音量変化をなめらかに。"),
             ("3つのフェードを、\nシンプルに操作。", "一時停止・再開・シークを一括でも個別でも。"),
             ("心地よい長さに、\n自分で調整。", "フェードアウトとフェードインを100〜3,000msで設定。"),
         ],
@@ -46,7 +46,7 @@ LOCALES = {
         "eyebrow": "暂停恢复音频淡入淡出",
         "badge": "实际界面",
         "slides": [
-            ("柔和暂停，\n平稳恢复。", "缓和 YouTube 播放时突然的音量变化。"),
+            ("柔和暂停，\n平稳恢复。", "缓和 YouTube、TVer、ABEMA 等播放时突然的音量变化。"),
             ("三种淡变，\n一个简单控制。", "暂停、恢复与跳转，可统一或单独开关。"),
             ("设置适合你的\n淡变时长。", "淡出与淡入均可在 100 至 3,000 毫秒之间调节。"),
         ],
@@ -55,7 +55,7 @@ LOCALES = {
         "eyebrow": "暫停恢復音訊淡入淡出",
         "badge": "實際介面",
         "slides": [
-            ("柔和暫停，\n平順恢復。", "緩和 YouTube 播放時突然的音量變化。"),
+            ("柔和暫停，\n平順恢復。", "緩和 YouTube、TVer、ABEMA 等播放時突然的音量變化。"),
             ("三種淡變，\n一個簡單控制。", "暫停、恢復與跳轉，可統一或個別開關。"),
             ("設定適合你的\n淡變時長。", "淡出與淡入皆可在 100 至 3,000 毫秒之間調整。"),
         ],
@@ -138,7 +138,7 @@ h1 {{ margin:0; white-space:pre-line; font-size:64px; line-height:1.06; letter-s
 .wave {{ position:absolute; left:62px; top:92px; display:flex; gap:9px; height:120px; align-items:center; opacity:.5; }}
 .wave i {{ display:block; width:7px; border-radius:9px; background:linear-gradient(#ff6565,#8d2828); }}
 .popup-card {{ position:absolute; right:112px; top:104px; width:332px; padding:15px; border-radius:23px; background:rgba(34,38,45,.8); border:1px solid rgba(255,255,255,.12); box-shadow:0 30px 90px rgba(0,0,0,.58); backdrop-filter:blur(24px); z-index:5; }}
-.popup-card iframe {{ display:block; width:300px; height:594px; border:0; border-radius:13px; background:#121417; }}
+.popup-card iframe {{ display:block; width:300px; height:640px; border:0; border-radius:13px; background:#121417; }}
 .badge {{ position:absolute; right:91px; top:80px; z-index:6; background:#ff4545; color:#fff; border-radius:99px; padding:8px 13px; font-size:11px; font-weight:800; letter-spacing:.08em; box-shadow:0 8px 24px rgba(255,40,40,.3); }}
 </style>
 </head>

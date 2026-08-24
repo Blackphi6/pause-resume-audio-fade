@@ -10,6 +10,7 @@
     <header>
       <h1 data-i18n="popupHeading">Pause / Resume Fade</h1>
       <p class="sub" data-i18n="popupSubtitle">Toggle all or each feature</p>
+      <p class="sub sites" data-i18n="sitesNote">YouTube, Netflix, Prime Video, TVer, ABEMA, and more.</p>
     </header>
 
     <label class="row toggle master">
@@ -51,7 +52,17 @@
       </p>
     </section>
 
-    <p class="hint" data-i18n="reloadHint">After changing settings, reload the YouTube tab.</p>
+    <section class="field" id="debugSection">
+      <label class="row toggle compact">
+        <span data-i18n="debugHudTitle">Debug overlay</span>
+        <input type="checkbox" id="debugHud" />
+      </label>
+      <p class="feature-note" data-i18n="debugHudNote">
+        Shows on-screen FADE OUT / FADE IN labels so you can confirm the fade.
+      </p>
+    </section>
+
+    <p class="hint" data-i18n="reloadHint">After changing settings, reload the tab you are watching.</p>
     <script src="popup.js"></script>
   </body>
 </html>

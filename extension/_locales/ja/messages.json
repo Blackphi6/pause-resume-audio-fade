@@ -4,7 +4,7 @@
     "description": "Extension name shown in the store and toolbar."
   },
   "extDescription": {
-    "message": "YouTube 視聴時、一時停止・再開・シークの音量を短くフェードして耳への負担を和らげます。",
+    "message": "ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。",
     "description": "Short description shown in the store and extensions page."
   },
   "popupHeading": {
@@ -14,6 +14,10 @@
   "popupSubtitle": {
     "message": "一括／個別でオン・オフできます",
     "description": "Popup subtitle."
+  },
+  "sitesNote": {
+    "message": "ブラウザの動画プレイヤーで動作します。",
+    "description": "Short list of supported streaming sites."
   },
   "masterToggle": {
     "message": "すべて有効",
@@ -40,8 +44,16 @@
     "description": "Explanation for the seek fade-in feature."
   },
   "reloadHint": {
-    "message": "変更後は YouTube タブをリロードしてください。",
+    "message": "変更後は視聴中のタブをリロードしてください。",
     "description": "Hint shown at the bottom of the popup."
+  },
+  "debugHudTitle": {
+    "message": "デバッグ表示",
+    "description": "Toggle for on-screen fade debug HUD."
+  },
+  "debugHudNote": {
+    "message": "画面に FADE OUT / FADE IN を出します。フェードの確認用です。",
+    "description": "Explanation for the debug overlay toggle."
   },
   "unitMs": {
     "message": "ms",
