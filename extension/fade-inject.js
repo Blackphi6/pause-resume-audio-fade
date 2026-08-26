@@ -586,9 +586,17 @@
 
   /** @param {AudioContext | null} ctx */
   function resumeCtx(ctx) {
-    if (ctx && ctx.state === "suspended") {
-      ctx.resume().catch(() => {});
+    if (!ctx || ctx.state !== "suspended") return;
+    // Calling resume() without real user activation (e.g. an embedded preview
+    // iframe on a search results page) can't succeed and only logs Chrome's
+    // "AudioContext was not allowed to start" warning. Skip it; a later real
+    // gesture will retry via warmAudioFromGesture/startFadeOut/runFadeIn.
+    try {
+      if (navigator.userActivation && !navigator.userActivation.isActive) return;
+    } catch {
+      /* ignore */
     }
+    ctx.resume().catch(() => {});
   }
 
   /**
