@@ -512,20 +512,25 @@
    * @param {FadeState} s
    */
   function restoreFullVolume(video, s) {
-    const base = s.userPlayerVolume > 0 ? s.userPlayerVolume : 100;
-    const player = getPlayer();
-    if (player && typeof player.setVolume === "function") {
+    // In "gain" mode the fade ramps a GainNode, not the player/element volume,
+    // so that volume never moved — overwriting it here with the last
+    // remembered level would stomp a volume change the user made mid-playback.
+    if (s.tapMode !== "gain") {
+      const base = s.userPlayerVolume > 0 ? s.userPlayerVolume : 100;
+      const player = getPlayer();
+      if (player && typeof player.setVolume === "function") {
+        try {
+          player.setVolume(clamp100(base));
+        } catch {
+          /* ignore */
+        }
+      }
       try {
-        player.setVolume(clamp100(base));
+        video.muted = false;
+        video.volume = s.userVolume > 0 ? clamp01(s.userVolume) : 1;
       } catch {
         /* ignore */
       }
-    }
-    try {
-      video.muted = false;
-      video.volume = s.userVolume > 0 ? clamp01(s.userVolume) : 1;
-    } catch {
-      /* ignore */
     }
     if (s.gainOk && s.gain && s.ctx) {
       resumeCtx(s.ctx);

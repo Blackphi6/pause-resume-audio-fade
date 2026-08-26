@@ -1,9 +1,9 @@
-# ストア貼り付け専用（1.5.1）
+# ストア貼り付け専用（1.5.2）
 
 ダッシュボード「ストアの掲載情報」へ、**グレーの枠の中だけ**コピーします。
 ` ```text ` という文字は貼らないでください。
 
-**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.5.1 の ZIP をアップロード** してください（すでに修正済み）。
+**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.5.2 の ZIP をアップロード** してください（すでに修正済み）。
 
 **説明（長文）だけ**、下の枠を4言語ぶん貼り直します。サイト名を長く並べないでください（キーワード スパム）。
 
@@ -13,7 +13,7 @@
 
 ### パッケージの概要
 
-**編集不可。** ZIP 1.5.1 を上げると、次の文に自動で変わります。
+**編集不可。** ZIP 1.5.2 を上げると、次の文に自動で変わります。
 
 ```text
 ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
@@ -98,7 +98,7 @@
 
 ### Package summary
 
-**Read-only on the dashboard.** Upload ZIP 1.5.1; it becomes:
+**Read-only on the dashboard.** Upload ZIP 1.5.2; it becomes:
 
 ```text
 Softly fade audio on pause, resume, and seek in browser video players.
@@ -179,7 +179,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.5.1 を上げると自動で変わります。
+**編集不可。** ZIP 1.5.2 を上げると自動で変わります。
 
 ### 说明（ここだけ手で貼る）
 
@@ -256,7 +256,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.5.1 を上げると自動で変わります。
+**編集不可。** ZIP 1.5.2 を上げると自動で変わります。
 
 ### 說明（ここだけ手で貼る）
 
