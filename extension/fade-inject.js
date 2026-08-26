@@ -781,14 +781,16 @@
 
   /** @param {HTMLVideoElement} video @param {FadeState} s */
   function rememberVolumes(video, s) {
+    // s.fading/pauseIntent/pauseHold already exclude every point where our
+    // own fade is actively ducking the volume, so any level seen here is a
+    // real user setting -- only exact 0 (muted-to-nothing) is untrustworthy.
     if (s.fading || s.pauseIntent || s.pauseHold) return;
     const player = getPlayer();
     if (player && typeof player.getVolume === "function") {
       const v = player.getVolume();
-      // Ignore ducked levels left over from a fade ramp.
-      if (typeof v === "number" && v >= 20) s.userPlayerVolume = v;
+      if (typeof v === "number" && v > 0) s.userPlayerVolume = v;
     }
-    if (!video.muted && video.volume > 0.2) s.userVolume = video.volume;
+    if (!video.muted && video.volume > 0) s.userVolume = video.volume;
   }
 
   function currentAmp(s) {
