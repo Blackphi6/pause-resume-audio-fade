@@ -134,10 +134,6 @@ def main() -> int:
         "debugHudTitle",
         "debugHudNote",
         "unitMs",
-        "quickMenuToggleTitle",
-        "quickMenuToggleNote",
-        "quickMenuChipTitle",
-        "closeLabel",
     }
     assert required_keys.issubset(base_keys), required_keys - base_keys
     for code in locale_codes:

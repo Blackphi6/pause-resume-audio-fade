@@ -12,14 +12,12 @@
   const ATTR = "data-prf-k";
   const CHIP_ID = "prf_mobile_chip";
   const TOAST_ID = "prf_mobile_toast";
-  const PANEL_ID = "prf_quick_panel";
 
   const DEFAULTS = Object.freeze({
     enabled: true,
     fadeOutEnabled: true,
     fadeInEnabled: true,
     seekFadeInEnabled: true,
-    quickMenuEnabled: true,
     debugHud: false,
     fadeOutMs: 350,
     fadeInMs: 300,
@@ -30,7 +28,6 @@
     "fadeOutEnabled",
     "fadeInEnabled",
     "seekFadeInEnabled",
-    "quickMenuEnabled",
     "debugHud",
   ];
   const MS_KEYS = ["fadeOutMs", "fadeInMs"];
@@ -41,23 +38,12 @@
     return Object.prototype.hasOwnProperty.call(obj, key);
   }
 
-  function t(key, fallback) {
-    try {
-      const msg = chrome.i18n.getMessage(key);
-      if (msg) return msg;
-    } catch {
-      /* ignore */
-    }
-    return fallback || "";
-  }
-
   function sanitizeSettings(raw) {
     const out = {
       enabled: DEFAULTS.enabled,
       fadeOutEnabled: DEFAULTS.fadeOutEnabled,
       fadeInEnabled: DEFAULTS.fadeInEnabled,
       seekFadeInEnabled: DEFAULTS.seekFadeInEnabled,
-      quickMenuEnabled: DEFAULTS.quickMenuEnabled,
       debugHud: DEFAULTS.debugHud,
       fadeOutMs: DEFAULTS.fadeOutMs,
       fadeInMs: DEFAULTS.fadeInMs,
@@ -178,22 +164,12 @@
   });
 
   /**
-   * Orion-safe HUD + quick-settings chip: isolated world injects into
-   * YouTube's mobile topbar (same approach as Music Mode for YouTube), or a
-   * fixed corner button on other sites, instead of a MAIN-world overlay that
-   * WebKit can hide. The chip doubles as a tap target for the quick-settings
-   * panel below, since a toolbar popup can be hard to reach on some mobile
-   * browsers (e.g. Orion).
+   * Orion-safe HUD: isolated world injects into YouTube's mobile topbar
+   * (same approach as Music Mode for YouTube), not a MAIN-world overlay.
    */
-  let hudEnabled = false; // debugHud: gates the fade-state color/text + toast
-  let quickMenuEnabled = true; // gates chip existence + tap-to-open panel
+  let hudEnabled = false;
   let toastTimer = 0;
   let chipPoll = 0;
-  let panelEl = null;
-
-  function chipShouldExist() {
-    return hudEnabled || quickMenuEnabled;
-  }
 
   function ensureToast() {
     let toast = document.getElementById(TOAST_ID);
@@ -222,17 +198,10 @@
     }
   }
 
-  function onChipActivate(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    togglePanel();
-  }
-
   function placeChip() {
-    if (!chipShouldExist()) {
+    if (!hudEnabled) {
       document.getElementById(CHIP_ID)?.remove();
       document.getElementById(TOAST_ID)?.remove();
-      closePanel();
       return true;
     }
     if (document.getElementById(CHIP_ID)) return true;
@@ -260,13 +229,7 @@
     chip.id = CHIP_ID;
     chip.className = "icon-button topbar-menu-button-avatar-button";
     chip.textContent = "PRF";
-    chip.title = t("quickMenuChipTitle", "Open fade settings");
-    chip.setAttribute("role", "button");
-    chip.setAttribute("tabindex", "0");
-    chip.addEventListener("click", onChipActivate);
-    chip.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " ") onChipActivate(event);
-    });
+    chip.title = "Pause Resume Audio Fade debug";
     host.insertBefore(chip, host.lastElementChild || null);
 
     new MutationObserver((mutations) => {
@@ -291,10 +254,12 @@
     }, 500);
   }
 
-  function refreshChip() {
-    if (chipShouldExist()) {
+  function setHudEnabled(on) {
+    hudEnabled = Boolean(on);
+    if (hudEnabled) {
       startChipLoop();
       placeChip();
+      showIsolatedToast("PRF debug", "isolated HUD ready");
     } else {
       if (chipPoll) {
         window.clearInterval(chipPoll);
@@ -302,29 +267,15 @@
       }
       document.getElementById(CHIP_ID)?.remove();
       document.getElementById(TOAST_ID)?.remove();
-      closePanel();
     }
   }
 
-  chrome.storage.local.get({ debugHud: false, quickMenuEnabled: true }, (stored) => {
-    hudEnabled = Boolean(stored.debugHud);
-    quickMenuEnabled = stored.quickMenuEnabled !== false;
-    refreshChip();
-    if (hudEnabled) showIsolatedToast("PRF debug", "isolated HUD ready");
+  chrome.storage.local.get({ debugHud: false }, (stored) => {
+    setHudEnabled(stored.debugHud);
   });
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== "local") return;
-    let chipChanged = false;
-    if (changes.debugHud) {
-      hudEnabled = Boolean(changes.debugHud.newValue);
-      chipChanged = true;
-    }
-    if (changes.quickMenuEnabled) {
-      quickMenuEnabled = changes.quickMenuEnabled.newValue !== false;
-      chipChanged = true;
-    }
-    if (chipChanged) refreshChip();
-    if (panelEl) syncPanelFromStorage();
+    if (area !== "local" || !changes.debugHud) return;
+    setHudEnabled(changes.debugHud.newValue);
   });
 
   window.addEventListener(EVENT_HUD, (event) => {
@@ -332,203 +283,4 @@
     if (!detail || detail.v !== 1) return;
     showIsolatedToast(String(detail.title || "PRF"), detail.note || "");
   });
-
-  /**
-   * On-page quick-settings panel: full parity with the toolbar popup, built
-   * with plain DOM calls (no innerHTML) and backed by the same
-   * chrome.storage.local keys, so it stays in sync with the popup for free.
-   */
-
-  function el(tag, props, ...children) {
-    const node = document.createElement(tag);
-    if (props) {
-      for (const [k, v] of Object.entries(props)) {
-        if (k === "text") node.textContent = v;
-        else if (k === "class") node.className = v;
-        else node.setAttribute(k, v);
-      }
-    }
-    for (const child of children) {
-      if (child) node.appendChild(child);
-    }
-    return node;
-  }
-
-  function clampMs(n) {
-    return Math.min(3000, Math.max(100, Math.round(Number(n) || 0)));
-  }
-
-  function formatMs(ms) {
-    return `${ms} ${t("unitMs", "ms")}`;
-  }
-
-  function toggleRow(labelKey, labelFallback, key) {
-    const input = el("input", { type: "checkbox" });
-    input.dataset.k = key;
-    const row = el(
-      "label",
-      { class: "prf-qp-row prf-qp-toggle" },
-      el("span", { text: t(labelKey, labelFallback) }),
-      input
-    );
-    return { row, input };
-  }
-
-  function sliderField(titleKey, titleFallback, enabledKey, msKey) {
-    const toggle = toggleRow(titleKey, titleFallback, enabledKey);
-    const valueLabel = el("strong", { text: "" });
-    const labelRow = el(
-      "div",
-      { class: "prf-qp-labelrow" },
-      el("span", { text: t("durationLabel", "Duration") }),
-      valueLabel
-    );
-    const slider = el("input", { type: "range", min: "100", max: "3000", step: "50" });
-    slider.dataset.k = msKey;
-    const field = el("div", { class: "prf-qp-field" }, toggle.row, labelRow, slider);
-    return { field, toggleInput: toggle.input, slider, valueLabel };
-  }
-
-  function syncPanelLabels(panel) {
-    panel._labels.fadeOutMs.textContent = formatMs(clampMs(panel._inputs.fadeOutMs.value));
-    panel._labels.fadeInMs.textContent = formatMs(clampMs(panel._inputs.fadeInMs.value));
-  }
-
-  function syncPanelDisabled(panel) {
-    const master = panel._inputs.enabled.checked;
-    for (const field of panel._dimmable) field.classList.toggle("is-dimmed", !master);
-    panel._inputs.fadeOutEnabled.disabled = !master;
-    panel._inputs.fadeInEnabled.disabled = !master;
-    panel._inputs.seekFadeInEnabled.disabled = !master;
-    panel._inputs.fadeOutMs.disabled = !master || !panel._inputs.fadeOutEnabled.checked;
-    panel._inputs.fadeInMs.disabled = !master || !panel._inputs.fadeInEnabled.checked;
-  }
-
-  function savePanelSettings(panel) {
-    chrome.storage.local.set({
-      enabled: Boolean(panel._inputs.enabled.checked),
-      fadeOutEnabled: Boolean(panel._inputs.fadeOutEnabled.checked),
-      fadeInEnabled: Boolean(panel._inputs.fadeInEnabled.checked),
-      seekFadeInEnabled: Boolean(panel._inputs.seekFadeInEnabled.checked),
-      debugHud: Boolean(panel._inputs.debugHud.checked),
-      fadeOutMs: clampMs(panel._inputs.fadeOutMs.value),
-      fadeInMs: clampMs(panel._inputs.fadeInMs.value),
-    });
-  }
-
-  function buildPanel() {
-    const panel = el("div", { id: PANEL_ID });
-
-    const closeBtn = el("button", {
-      type: "button",
-      class: "prf-qp-close",
-      "aria-label": t("closeLabel", "Close"),
-      text: "×",
-    });
-    closeBtn.addEventListener("click", closePanel);
-
-    const head = el(
-      "div",
-      { class: "prf-qp-head" },
-      el("span", { class: "prf-qp-title", text: t("popupHeading", "Pause / Resume Fade") }),
-      closeBtn
-    );
-
-    const master = toggleRow("masterToggle", "Enable all", "enabled");
-    master.row.classList.add("prf-qp-master");
-
-    const fadeOut = sliderField("fadeOutTitle", "Fade out (pause)", "fadeOutEnabled", "fadeOutMs");
-    const fadeIn = sliderField("fadeInTitle", "Fade in (resume)", "fadeInEnabled", "fadeInMs");
-    const seek = toggleRow("seekTitle", "Fade in on seek", "seekFadeInEnabled");
-    const debug = toggleRow("debugHudTitle", "Debug overlay", "debugHud");
-    const seekField = el("div", { class: "prf-qp-field" }, seek.row);
-    const debugField = el("div", { class: "prf-qp-field" }, debug.row);
-
-    panel.appendChild(head);
-    panel.appendChild(master.row);
-    panel.appendChild(fadeOut.field);
-    panel.appendChild(fadeIn.field);
-    panel.appendChild(seekField);
-    panel.appendChild(debugField);
-
-    panel._inputs = {
-      enabled: master.input,
-      fadeOutEnabled: fadeOut.toggleInput,
-      fadeInEnabled: fadeIn.toggleInput,
-      seekFadeInEnabled: seek.input,
-      debugHud: debug.input,
-      fadeOutMs: fadeOut.slider,
-      fadeInMs: fadeIn.slider,
-    };
-    panel._labels = { fadeOutMs: fadeOut.valueLabel, fadeInMs: fadeIn.valueLabel };
-    panel._dimmable = [fadeOut.field, fadeIn.field, seekField];
-
-    for (const input of Object.values(panel._inputs)) {
-      const isRange = input.type === "range";
-      input.addEventListener(isRange ? "input" : "change", () => {
-        if (isRange) syncPanelLabels(panel);
-        savePanelSettings(panel);
-        syncPanelDisabled(panel);
-      });
-    }
-
-    return panel;
-  }
-
-  function syncPanelFromStorage() {
-    if (!panelEl) return;
-    chrome.storage.local.get(DEFAULTS, (stored) => {
-      if (!panelEl) return;
-      const clean = sanitizeSettings(stored);
-      panelEl._inputs.enabled.checked = clean.enabled;
-      panelEl._inputs.fadeOutEnabled.checked = clean.fadeOutEnabled;
-      panelEl._inputs.fadeInEnabled.checked = clean.fadeInEnabled;
-      panelEl._inputs.seekFadeInEnabled.checked = clean.seekFadeInEnabled;
-      panelEl._inputs.debugHud.checked = clean.debugHud;
-      panelEl._inputs.fadeOutMs.value = String(clean.fadeOutMs);
-      panelEl._inputs.fadeInMs.value = String(clean.fadeInMs);
-      syncPanelLabels(panelEl);
-      syncPanelDisabled(panelEl);
-    });
-  }
-
-  function openPanel() {
-    if (!panelEl) {
-      panelEl = buildPanel();
-      (document.documentElement || document.body).appendChild(panelEl);
-    }
-    syncPanelFromStorage();
-    panelEl.classList.add("prf-qp-open");
-  }
-
-  function closePanel() {
-    if (panelEl) panelEl.classList.remove("prf-qp-open");
-  }
-
-  function togglePanel() {
-    if (panelEl && panelEl.classList.contains("prf-qp-open")) closePanel();
-    else openPanel();
-  }
-
-  document.addEventListener(
-    "pointerdown",
-    (event) => {
-      if (!panelEl || !panelEl.classList.contains("prf-qp-open")) return;
-      const target = event.target;
-      const chip = document.getElementById(CHIP_ID);
-      if (panelEl.contains(target) || (chip && chip.contains(target))) return;
-      closePanel();
-    },
-    true
-  );
-
-  document.addEventListener(
-    "keydown",
-    (event) => {
-      if (event.key === "Escape" && panelEl && panelEl.classList.contains("prf-qp-open")) {
-        closePanel();
-      }
-    },
-    true
-  );
 })();
