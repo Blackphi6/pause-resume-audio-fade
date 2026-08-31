@@ -3,6 +3,7 @@ const DEFAULTS = {
   fadeOutEnabled: true,
   fadeInEnabled: true,
   seekFadeInEnabled: true,
+  quickMenuEnabled: true,
   debugHud: false,
   fadeOutMs: 350,
   fadeInMs: 300,
@@ -42,6 +43,7 @@ const enabledEl = document.getElementById("enabled");
 const fadeOutEnabledEl = document.getElementById("fadeOutEnabled");
 const fadeInEnabledEl = document.getElementById("fadeInEnabled");
 const seekFadeInEnabledEl = document.getElementById("seekFadeInEnabled");
+const quickMenuEnabledEl = document.getElementById("quickMenuEnabled");
 const debugHudEl = document.getElementById("debugHud");
 const fadeOutEl = document.getElementById("fadeOutMs");
 const fadeInEl = document.getElementById("fadeInMs");
@@ -50,6 +52,7 @@ const fadeInLabel = document.getElementById("fadeInLabel");
 const fadeOutSection = document.getElementById("fadeOutSection");
 const fadeInSection = document.getElementById("fadeInSection");
 const seekSection = document.getElementById("seekSection");
+const quickMenuSection = document.getElementById("quickMenuSection");
 const debugSection = document.getElementById("debugSection");
 
 function clampMs(n) {
@@ -75,9 +78,12 @@ function syncDisabled() {
   seekFadeInEnabledEl.disabled = !master;
   fadeOutEl.disabled = !master || !fadeOutEnabledEl.checked;
   fadeInEl.disabled = !master || !fadeInEnabledEl.checked;
-  // Debug overlay stays available even when master is off (to verify injection).
+  // Debug overlay and the on-page quick menu stay available even when master
+  // is off, so they can still be used to re-enable everything from the page.
   if (debugSection) debugSection.classList.remove("is-dimmed");
+  if (quickMenuSection) quickMenuSection.classList.remove("is-dimmed");
   debugHudEl.disabled = false;
+  quickMenuEnabledEl.disabled = false;
 }
 
 /** Persist only whitelisted preference keys (no PII). */
@@ -87,6 +93,7 @@ function save() {
     fadeOutEnabled: Boolean(fadeOutEnabledEl.checked),
     fadeInEnabled: Boolean(fadeInEnabledEl.checked),
     seekFadeInEnabled: Boolean(seekFadeInEnabledEl.checked),
+    quickMenuEnabled: Boolean(quickMenuEnabledEl.checked),
     debugHud: Boolean(debugHudEl.checked),
     fadeOutMs: clampMs(fadeOutEl.value),
     fadeInMs: clampMs(fadeInEl.value),
@@ -123,6 +130,10 @@ function applyStored(stored) {
     typeof fadeInEnabled === "boolean" ? fadeInEnabled : DEFAULTS.fadeInEnabled;
   seekFadeInEnabledEl.checked =
     typeof seekFadeInEnabled === "boolean" ? seekFadeInEnabled : DEFAULTS.seekFadeInEnabled;
+  quickMenuEnabledEl.checked =
+    typeof stored.quickMenuEnabled === "boolean"
+      ? stored.quickMenuEnabled
+      : DEFAULTS.quickMenuEnabled;
   debugHudEl.checked = typeof stored.debugHud === "boolean" ? stored.debugHud : DEFAULTS.debugHud;
   fadeOutEl.value = String(fadeOutMs);
   fadeInEl.value = String(fadeInMs);
@@ -138,6 +149,7 @@ function sanitizePrefs(raw) {
     "fadeOutEnabled",
     "fadeInEnabled",
     "seekFadeInEnabled",
+    "quickMenuEnabled",
     "debugHud",
   ]) {
     if (typeof raw[key] === "boolean") out[key] = raw[key];
@@ -156,6 +168,7 @@ function loadPrefs() {
     "fadeOutEnabled",
     "fadeInEnabled",
     "seekFadeInEnabled",
+    "quickMenuEnabled",
     "debugHud",
     "fadeOutMs",
     "fadeInMs",
@@ -195,7 +208,13 @@ enabledEl.addEventListener("change", () => {
   save();
 });
 
-for (const el of [fadeOutEnabledEl, fadeInEnabledEl, seekFadeInEnabledEl, debugHudEl]) {
+for (const el of [
+  fadeOutEnabledEl,
+  fadeInEnabledEl,
+  seekFadeInEnabledEl,
+  quickMenuEnabledEl,
+  debugHudEl,
+]) {
   el.addEventListener("change", () => {
     syncDisabled();
     save();

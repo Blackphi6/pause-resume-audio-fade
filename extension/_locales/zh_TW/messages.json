@@ -58,5 +58,21 @@
   "unitMs": {
     "message": "毫秒",
     "description": "Millisecond unit shown next to duration values."
+  },
+  "quickMenuToggleTitle": {
+    "message": "頁面內快速選單",
+    "description": "Toggle for the on-page settings chip/panel."
+  },
+  "quickMenuToggleNote": {
+    "message": "在影片頁面顯示一個可點按的小按鈕，不必開啟此彈出視窗即可變更設定。",
+    "description": "Explanation for the on-page quick menu toggle."
+  },
+  "quickMenuChipTitle": {
+    "message": "開啟淡變設定",
+    "description": "Tooltip/aria-label for the on-page settings chip."
+  },
+  "closeLabel": {
+    "message": "關閉",
+    "description": "Close button label for the on-page settings panel."
   }
 }

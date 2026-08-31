@@ -58,5 +58,21 @@
   "unitMs": {
     "message": "ms",
     "description": "Millisecond unit shown next to duration values."
+  },
+  "quickMenuToggleTitle": {
+    "message": "ページ内クイックメニュー",
+    "description": "Toggle for the on-page settings chip/panel."
+  },
+  "quickMenuToggleNote": {
+    "message": "動画ページに小さなボタンを表示し、このポップアップを開かなくても設定を変更できるようにします。",
+    "description": "Explanation for the on-page quick menu toggle."
+  },
+  "quickMenuChipTitle": {
+    "message": "フェード設定を開く",
+    "description": "Tooltip/aria-label for the on-page settings chip."
+  },
+  "closeLabel": {
+    "message": "閉じる",
+    "description": "Close button label for the on-page settings panel."
   }
 }
