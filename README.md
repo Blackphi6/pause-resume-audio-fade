@@ -72,6 +72,12 @@ YouTube、TVer、ABEMA では動作を確認しています。一部の DRM 配�
 - 各言語3枚のストア画像は `assets/store/screenshots/<locale>/` にあります。
 - 画像の再生成: `.venv/bin/python scripts/generate_store_screenshots.py`
 
+## Mac ネイティブアプリ
+
+Chrome 拡張とは別に、Apple Silicon Mac 向けのメニューバーアプリもあります: [macos/PauseResumeAudioFade](./macos/PauseResumeAudioFade)
+
+ブラウザの特定サイトだけでなく、Mac 上で再生されるもの全般（Music、Safari、Chrome、VLC など）を対象に、システムの出力音量そのものを一時停止・再開に合わせてフェードします。仕組み・制限（システム音量全体に効く、Appleの非公開APIを使用、など）は同フォルダの README を参照してください。
+
 ## Privacy
 
 - [PRIVACY.md](./PRIVACY.md)
