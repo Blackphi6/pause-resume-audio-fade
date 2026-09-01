@@ -589,18 +589,23 @@
     }
   }
 
+  // Has this document ever seen a real user gesture? Set once, permanently,
+  // by the pointerdown/touchstart/keydown listeners below. Unlike
+  // navigator.userActivation.isActive (transient, and often already expired
+  // by the time an async play()-promise callback runs -- e.g. on a slow
+  // mobile re-buffer after resuming from pause, which left the AudioContext
+  // stuck "suspended" and the video silent), this never goes stale once true.
+  let hasRealGesture = false;
+
   /** @param {AudioContext | null} ctx */
   function resumeCtx(ctx) {
     if (!ctx || ctx.state !== "suspended") return;
-    // Calling resume() without real user activation (e.g. an embedded preview
-    // iframe on a search results page) can't succeed and only logs Chrome's
-    // "AudioContext was not allowed to start" warning. Skip it; a later real
-    // gesture will retry via warmAudioFromGesture/startFadeOut/runFadeIn.
-    try {
-      if (navigator.userActivation && !navigator.userActivation.isActive) return;
-    } catch {
-      /* ignore */
-    }
+    // Calling resume() before this document has ever had a real gesture
+    // (e.g. an embedded preview iframe on a search results page that the
+    // user never actually touched) can't succeed and only logs Chrome's
+    // "AudioContext was not allowed to start" warning. Skip it in that case;
+    // a later real gesture will retry via warmAudioFromGesture.
+    if (!hasRealGesture) return;
     ctx.resume().catch(() => {});
   }
 
@@ -1157,6 +1162,7 @@
 
   // Desktop: unlock AudioContext on first gesture. Orion/iOS: never attach GainNode.
   function warmAudioFromGesture() {
+    hasRealGesture = true;
     const video = findMainVideo();
     if (!(video instanceof HTMLVideoElement)) return;
     const s = getState(video);
