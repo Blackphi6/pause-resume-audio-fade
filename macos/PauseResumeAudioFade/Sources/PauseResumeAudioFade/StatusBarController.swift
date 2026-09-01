@@ -1,16 +1,18 @@
 import AppKit
 
-/// Menu bar UI: a status item with a dropdown for the master toggle and
-/// fade-duration presets. No dock icon, no window -- this app only exists
-/// in the menu bar.
+/// Menu bar UI: a status item with a dropdown for live diagnostics, the
+/// master toggle, and fade-duration presets. No dock icon, no window --
+/// this app only exists in the menu bar.
 final class StatusBarController: NSObject {
     private let item: NSStatusItem
     private let durationPresetsMs = [150, 350, 600, 1000, 2000]
 
+    private var detectionStatusItem: NSMenuItem!
+    private var deviceStatusItem: NSMenuItem!
+    private var playbackStatusItem: NSMenuItem!
     private var enabledMenuItem: NSMenuItem!
     private var fadeOutItems: [NSMenuItem] = []
     private var fadeInItems: [NSMenuItem] = []
-    private var unsupportedItem: NSMenuItem!
 
     var onEnabledChanged: ((Bool) -> Void)?
     var onFadeOutMsChanged: ((Int) -> Void)?
@@ -28,7 +30,7 @@ final class StatusBarController: NSObject {
             button.image?.isTemplate = true
         }
 
-        item.menu = buildMenu(volumeControlSupported: volumeControlSupported)
+        item.menu = buildMenu()
         syncFrom(preferences: .shared)
     }
 
@@ -38,13 +40,35 @@ final class StatusBarController: NSObject {
         updateCheckmarks(items: fadeInItems, presets: durationPresetsMs, current: preferences.fadeInMs)
     }
 
+    /// Refreshed at launch and every time detection or device state changes,
+    /// so "why isn't this working" is answerable by just opening the menu
+    /// instead of needing Console.app.
+    func updateDiagnostics(mediaRemoteAvailable: Bool, deviceName: String, deviceSupported: Bool, isPlaying: Bool?) {
+        detectionStatusItem.title = mediaRemoteAvailable
+            ? "検知: 利用可能"
+            : "検知: 利用不可（この macOS では再生検知APIが見つかりません）"
+
+        deviceStatusItem.title = deviceSupported
+            ? "出力デバイス: \(deviceName)（音量フェード対応）"
+            : "出力デバイス: \(deviceName)（このデバイスは音量フェードに非対応）"
+
+        switch isPlaying {
+        case .some(true):
+            playbackStatusItem.title = "現在の再生状態: 再生中"
+        case .some(false):
+            playbackStatusItem.title = "現在の再生状態: 一時停止中 / 何も再生していない"
+        case .none:
+            playbackStatusItem.title = "現在の再生状態: 不明"
+        }
+    }
+
     private func updateCheckmarks(items: [NSMenuItem], presets: [Int], current: Int) {
         for (item, ms) in zip(items, presets) {
             item.state = ms == current ? .on : .off
         }
     }
 
-    private func buildMenu(volumeControlSupported: Bool) -> NSMenu {
+    private func buildMenu() -> NSMenu {
         let menu = NSMenu()
 
         let title = NSMenuItem(title: "Pause Resume Audio Fade", action: nil, keyEquivalent: "")
@@ -52,16 +76,13 @@ final class StatusBarController: NSObject {
         menu.addItem(title)
         menu.addItem(.separator())
 
-        if !volumeControlSupported {
-            unsupportedItem = NSMenuItem(
-                title: "この出力デバイスは音量フェードに対応していません",
-                action: nil,
-                keyEquivalent: ""
-            )
-            unsupportedItem.isEnabled = false
-            menu.addItem(unsupportedItem)
-            menu.addItem(.separator())
-        }
+        detectionStatusItem = disabledInfoItem()
+        deviceStatusItem = disabledInfoItem()
+        playbackStatusItem = disabledInfoItem()
+        menu.addItem(detectionStatusItem)
+        menu.addItem(deviceStatusItem)
+        menu.addItem(playbackStatusItem)
+        menu.addItem(.separator())
 
         enabledMenuItem = NSMenuItem(
             title: "有効にする",
@@ -102,6 +123,12 @@ final class StatusBarController: NSObject {
         menu.addItem(quit)
 
         return menu
+    }
+
+    private func disabledInfoItem() -> NSMenuItem {
+        let item = NSMenuItem(title: "...", action: nil, keyEquivalent: "")
+        item.isEnabled = false
+        return item
     }
 
     @objc private func toggleEnabled() {

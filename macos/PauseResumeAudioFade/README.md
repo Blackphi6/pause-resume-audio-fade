@@ -49,6 +49,33 @@ Click it for:
 
 Settings persist across launches (`UserDefaults`).
 
+## Troubleshooting
+
+Click the menu bar icon and read the three status lines at the top of the
+menu -- they tell you exactly which part isn't working:
+
+- **検知: 利用不可** -- play/pause detection itself isn't available on this
+  macOS version (see [Limitations](#limitations) about the private API).
+- **出力デバイス: ...（非対応）** -- your current output device doesn't
+  expose a settable system volume to apps; fading can't work regardless of
+  the other settings.
+- **現在の再生状態** -- reflects what the app currently thinks is
+  playing/paused. If this doesn't change when you pause/resume something,
+  detection isn't picking up that particular app/content (some apps only
+  publish "Now Playing" info when driven from their own UI, not when
+  controlled via automation/scripting).
+
+**Can't find the icon at all?** If you have many menu bar apps installed,
+macOS can push new, low-priority status items off the visible edge of a
+crowded menu bar (there's no "..." overflow indicator on every macOS
+version). Try quitting a few other menu bar apps, or use a menu bar
+manager (e.g. Ice, Bartender) to check the hidden/overflow section.
+
+No extra system permission (Accessibility, Automation, Screen Recording,
+etc.) was needed in testing -- if a permission prompt *does* appear for you,
+it's worth reporting as an issue, since that would be new/unexpected
+behavior for the APIs this app uses.
+
 ## Limitations
 
 - **Affects the whole system's output volume**, not just the app you

@@ -19,6 +19,21 @@ final class SystemVolumeFader {
 
     var isSupported: Bool { !elements.isEmpty }
 
+    var deviceName: String {
+        guard deviceID != AudioDeviceID(kAudioObjectUnknown) else { return "(不明)" }
+        var address = AudioObjectPropertyAddress(
+            mSelector: kAudioObjectPropertyName,
+            mScope: kAudioObjectPropertyScopeGlobal,
+            mElement: kAudioObjectPropertyElementMain
+        )
+        var name: CFString = "" as CFString
+        var size = UInt32(MemoryLayout<CFString>.size)
+        let status = withUnsafeMutablePointer(to: &name) { pointer in
+            AudioObjectGetPropertyData(deviceID, &address, 0, nil, &size, pointer)
+        }
+        return status == noErr ? (name as String) : "(名前不明)"
+    }
+
     init() {
         refreshDevice()
     }
