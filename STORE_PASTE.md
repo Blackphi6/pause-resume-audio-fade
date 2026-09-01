@@ -30,7 +30,7 @@
 
 【今回の更新】
 
-対応する動画サイトをさらに増やしました。
+一部の環境で、一時停止から再生を再開すると音が出なくなることがある不具合を修正しました。
 
 使い始めるときは、いま見ているタブをいちど再読み込みしてください。
 
@@ -113,7 +113,7 @@ Pausing a video can cut the sound off abruptly, and resuming can feel like the v
 
 [What's new]
 
-Support for more browser-based video players. Reload the tab you are watching after updating.
+Fixed an issue where audio could stop working after resuming from pause in some environments. Reload the tab you are watching after updating.
 
 [Features]
 
@@ -190,7 +190,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-扩大了支持的视频网站范围。更新后请重新加载正在观看的标签页。
+修复了在部分环境下暂停后恢复播放可能导致没有声音的问题。更新后请重新加载正在观看的标签页。
 
 【主要功能】
 
@@ -267,7 +267,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-擴大了支援的影片網站範圍。更新後請重新載入正在觀看的分頁。
+修正了在部分環境下暫停後恢復播放可能導致沒有聲音的問題。更新後請重新載入正在觀看的分頁。
 
 【主要功能】
 
