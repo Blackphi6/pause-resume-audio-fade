@@ -92,6 +92,17 @@ Chrome 拡張とは別に、Apple Silicon Mac 向けのメニューバーアプ�
 4. 単一目的: 対応サイトでの一時停止／再開／シーク音量フェード
 5. ストア掲載文・審査回答: [STORE_LISTING.md](./STORE_LISTING.md)
 
+### Firefox Add-ons（AMO）
+
+同じ `extension` フォルダ・同じ ZIP でそのまま提出できます（`manifest.json` に `browser_specific_settings` を追加済みで、Chrome 側の動作には影響しません）。
+
+1. `Node.js` が入っていれば `cd extension && npx web-ext lint --self-hosted` でローカル検証できます（0 errors / 0 notices を確認済み。残る1件の warning は Firefox に無い incognito split モードに関する既知の無害な警告）
+2. https://addons.mozilla.org/developers/ で開発者アカウントを作成（無料）
+3. 「新しい拡張機能を送信」→ ZIP をアップロード
+4. 説明文・カテゴリ等は [STORE_PASTE.md](./STORE_PASTE.md) の日本語／English／简体中文／繁體中文をそのまま流用可能
+5. データ収集の申告は `manifest.json` の `data_collection_permissions: { "required": ["none"] }` から自動反映されます
+6. Firefox 142 未満では動作しません（`data_collection_permissions` の対応バージョンに合わせた最小バージョン設定。`world: "MAIN"` の content script 自体は Firefox 128 から対応済み）
+
 ## 技術メモ
 
 - Manifest V3 / `incognito: split`
