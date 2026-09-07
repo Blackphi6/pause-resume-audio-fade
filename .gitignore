@@ -4,3 +4,4 @@ __pycache__/
 .DS_Store
 *.zip
 assets/store/screenshots/_source/
+skill-state/
