@@ -4,7 +4,7 @@
 
 リポジトリ: https://github.com/Blackphi6/pause-resume-audio-fade
 
-現在のバージョン: **1.4.1**
+現在のバージョン: **1.7.0**
 
 ## インストール
 
