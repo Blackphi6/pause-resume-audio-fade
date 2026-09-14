@@ -653,23 +653,39 @@
    */
   function fade(video, s, from, to, durationMs, onDone) {
     clearFadeTimer(s);
-    resumeCtx(s.ctx);
 
     from = clamp01(from);
     to = clamp01(to);
 
     if (s.tapMode !== "volume" && s.tapMode !== "locked" && s.gainOk && s.gain && s.ctx && durationMs > 0) {
-      const g = s.gain.gain;
-      const t0 = s.ctx.currentTime;
-      const dur = Math.max(0.05, durationMs / 1000);
-      g.cancelScheduledValues(t0);
-      g.setValueAtTime(from, t0);
-      g.linearRampToValueAtTime(to, t0 + dur);
-      s.timer = window.setTimeout(() => {
-        s.timer = 0;
-        applyLevel(video, s, to);
-        onDone();
-      }, durationMs + 30);
+      const ctx = s.ctx;
+      const gainNode = s.gain;
+      const scheduleRamp = () => {
+        // A newer call may have replaced/cleared the gain node while we
+        // waited for ctx.resume() -- don't schedule against a stale one.
+        if (s.gain !== gainNode || s.ctx !== ctx) return;
+        const g = gainNode.gain;
+        const t0 = ctx.currentTime;
+        const dur = Math.max(0.05, durationMs / 1000);
+        g.cancelScheduledValues(t0);
+        g.setValueAtTime(from, t0);
+        g.linearRampToValueAtTime(to, t0 + dur);
+        s.timer = window.setTimeout(() => {
+          s.timer = 0;
+          applyLevel(video, s, to);
+          onDone();
+        }, durationMs + 30);
+      };
+      // Scheduling AudioParam automation while the context is still
+      // suspended anchors it to a currentTime that never advances until
+      // resume() finishes -- once it does, playback jumps straight to the
+      // ramp's end value instead of audibly fading. Wait for the resume
+      // (when one is actually possible) before scheduling.
+      if (ctx.state === "suspended" && hasRealGesture) {
+        ctx.resume().then(scheduleRamp, scheduleRamp);
+      } else {
+        scheduleRamp();
+      }
       return;
     }
 
