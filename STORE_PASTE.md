@@ -1,9 +1,9 @@
-# ストア貼り付け専用（1.6.2）
+# ストア貼り付け専用（1.7.1）
 
 ダッシュボード「ストアの掲載情報」へ、**グレーの枠の中だけ**コピーします。
 ` ```text ` という文字は貼らないでください。
 
-**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.6.2 の ZIP をアップロード** してください（すでに修正済み）。
+**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.7.1 の ZIP をアップロード** してください（すでに修正済み）。
 
 **説明（長文）だけ**、下の枠を4言語ぶん貼り直します。サイト名を長く並べないでください（キーワード スパム）。
 
@@ -13,7 +13,7 @@
 
 ### パッケージの概要
 
-**編集不可。** ZIP 1.6.2 を上げると、次の文に自動で変わります。
+**編集不可。** ZIP 1.7.1 を上げると、次の文に自動で変わります。
 
 ```text
 ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
@@ -30,7 +30,7 @@
 
 【今回の更新】
 
-一部の環境で、一時停止から再生を再開すると音が出なくなることがある不具合を修正しました。
+まれに、一時停止・再開のタイミングによってはフェードが効かずに音量が急に変化することがある不具合を修正しました。
 
 使い始めるときは、いま見ているタブをいちど再読み込みしてください。
 
@@ -98,7 +98,7 @@
 
 ### Package summary
 
-**Read-only on the dashboard.** Upload ZIP 1.6.2; it becomes:
+**Read-only on the dashboard.** Upload ZIP 1.7.1; it becomes:
 
 ```text
 Softly fade audio on pause, resume, and seek in browser video players.
@@ -113,7 +113,7 @@ Pausing a video can cut the sound off abruptly, and resuming can feel like the v
 
 [What's new]
 
-Fixed an issue where audio could stop working after resuming from pause in some environments. Reload the tab you are watching after updating.
+Fixed a rare issue where, depending on pause/resume timing, the fade could be skipped and the volume would jump instead. Reload the tab you are watching after updating.
 
 [Features]
 
@@ -179,7 +179,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.6.2 を上げると自動で変わります。
+**編集不可。** ZIP 1.7.1 を上げると自動で変わります。
 
 ### 说明（ここだけ手で貼る）
 
@@ -190,7 +190,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-修复了在部分环境下暂停后恢复播放可能导致没有声音的问题。更新后请重新加载正在观看的标签页。
+修复了在极少数情况下,因暂停/恢复的时机不同,淡变可能不生效、音量突然跳变的问题。更新后请重新加载正在观看的标签页。
 
 【主要功能】
 
@@ -256,7 +256,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.6.2 を上げると自動で変わります。
+**編集不可。** ZIP 1.7.1 を上げると自動で変わります。
 
 ### 說明（ここだけ手で貼る）
 
@@ -267,7 +267,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-修正了在部分環境下暫停後恢復播放可能導致沒有聲音的問題。更新後請重新載入正在觀看的分頁。
+修正了在極少數情況下,因暫停/恢復的時機不同,淡變可能不生效、音量突然跳變的問題。更新後請重新載入正在觀看的分頁。
 
 【主要功能】
 
