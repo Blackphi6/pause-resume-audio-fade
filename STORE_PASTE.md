@@ -7,6 +7,24 @@
 
 **説明（長文）だけ**、下の枠を4言語ぶん貼り直します。サイト名を長く並べないでください（キーワード スパム）。
 
+## Firefox: バージョン更新時に出る「バージョンの説明を記入」画面
+
+ZIPアップロード後の検証が通ると、初回提出にはない **リリースノート** と **審査担当者へのメモ** の入力画面が毎回出る。ここに貼る。
+
+### リリースノート
+
+日本語版の下の【今回の更新】の本文をそのままコピーして貼る（言語ごとの入力欄がある場合は各言語の【今回の更新】/[What's new]/【本次更新】を対応する言語欄に）。
+
+### 審査担当者へのメモ（ビルドプロセスなし・毎回ほぼ同じ内容で使い回せる）
+
+```text
+This extension contains no build process, bundler, or minification. All files in the submitted package are the exact, human-readable source code as-is — no source code submission is required.
+
+Test instructions: install and open https://www.youtube.com/ (no login required), play any video, then pause and resume it. Audio fades out on pause and back in on resume.
+```
+
+※ ビルド処理を追加した将来のバージョンでは、この文面を実態に合わせて書き換えること。
+
 ---
 
 ## 日本語
