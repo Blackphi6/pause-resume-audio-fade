@@ -5,3 +5,4 @@ __pycache__/
 *.zip
 assets/store/screenshots/_source/
 skill-state/
+docs/firefox_submit_guide.pdf
