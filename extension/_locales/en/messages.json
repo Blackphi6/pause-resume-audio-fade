@@ -43,6 +43,10 @@
     "message": "When you move the timeline during playback, audio fades in from the new position (same duration as fade-in).",
     "description": "Explanation for the seek fade-in feature."
   },
+  "resetDefaults": {
+    "message": "Reset to defaults",
+    "description": "Button that restores all popup settings to their defaults."
+  },
   "reloadHint": {
     "message": "After changing settings, reload the tab you are watching.",
     "description": "Hint shown at the bottom of the popup."

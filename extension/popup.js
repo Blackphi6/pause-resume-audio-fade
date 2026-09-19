@@ -51,6 +51,7 @@ const fadeOutSection = document.getElementById("fadeOutSection");
 const fadeInSection = document.getElementById("fadeInSection");
 const seekSection = document.getElementById("seekSection");
 const debugSection = document.getElementById("debugSection");
+const resetEl = document.getElementById("resetDefaults");
 
 function clampMs(n) {
   return Math.min(3000, Math.max(100, Math.round(Number(n) || 0)));
@@ -80,8 +81,20 @@ function syncDisabled() {
   debugHudEl.disabled = false;
 }
 
+function syncReset() {
+  resetEl.disabled =
+    enabledEl.checked === DEFAULTS.enabled &&
+    fadeOutEnabledEl.checked === DEFAULTS.fadeOutEnabled &&
+    fadeInEnabledEl.checked === DEFAULTS.fadeInEnabled &&
+    seekFadeInEnabledEl.checked === DEFAULTS.seekFadeInEnabled &&
+    debugHudEl.checked === DEFAULTS.debugHud &&
+    Number(fadeOutEl.value) === DEFAULTS.fadeOutMs &&
+    Number(fadeInEl.value) === DEFAULTS.fadeInMs;
+}
+
 /** Persist only whitelisted preference keys (no PII). */
 function save() {
+  syncReset();
   chrome.storage.local.set({
     enabled: Boolean(enabledEl.checked),
     fadeOutEnabled: Boolean(fadeOutEnabledEl.checked),
@@ -128,6 +141,7 @@ function applyStored(stored) {
   fadeInEl.value = String(fadeInMs);
   syncLabels();
   syncDisabled();
+  syncReset();
 }
 
 function sanitizePrefs(raw) {
@@ -208,5 +222,10 @@ fadeOutEl.addEventListener("input", () => {
 });
 fadeInEl.addEventListener("input", () => {
   syncLabels();
+  save();
+});
+
+resetEl.addEventListener("click", () => {
+  applyStored(DEFAULTS);
   save();
 });

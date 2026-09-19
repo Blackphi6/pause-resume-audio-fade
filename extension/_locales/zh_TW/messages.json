@@ -43,6 +43,10 @@
     "message": "播放時拖曳進度列後，會從到達的位置淡入（時長與上方的淡入相同）。",
     "description": "Explanation for the seek fade-in feature."
   },
+  "resetDefaults": {
+    "message": "恢復預設設定",
+    "description": "Button that restores all popup settings to their defaults."
+  },
   "reloadHint": {
     "message": "變更設定後，請重新載入正在觀看的分頁。",
     "description": "Hint shown at the bottom of the popup."

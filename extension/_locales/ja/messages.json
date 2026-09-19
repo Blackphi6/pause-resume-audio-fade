@@ -43,6 +43,10 @@
     "message": "再生中にタイムラインを動かしたとき、到着位置からフェードインします（時間は上のフェードインと同じ）。",
     "description": "Explanation for the seek fade-in feature."
   },
+  "resetDefaults": {
+    "message": "デフォルトに戻す",
+    "description": "Button that restores all popup settings to their defaults."
+  },
   "reloadHint": {
     "message": "変更後は視聴中のタブをリロードしてください。",
     "description": "Hint shown at the bottom of the popup."
