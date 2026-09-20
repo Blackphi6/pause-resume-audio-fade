@@ -52,6 +52,8 @@ const fadeInSection = document.getElementById("fadeInSection");
 const seekSection = document.getElementById("seekSection");
 const debugSection = document.getElementById("debugSection");
 const resetEl = document.getElementById("resetDefaults");
+const resetFadeOutEl = document.getElementById("resetFadeOut");
+const resetFadeInEl = document.getElementById("resetFadeIn");
 
 function clampMs(n) {
   return Math.min(3000, Math.max(100, Math.round(Number(n) || 0)));
@@ -82,6 +84,8 @@ function syncDisabled() {
 }
 
 function syncReset() {
+  resetFadeOutEl.disabled = Number(fadeOutEl.value) === DEFAULTS.fadeOutMs;
+  resetFadeInEl.disabled = Number(fadeInEl.value) === DEFAULTS.fadeInMs;
   resetEl.disabled =
     enabledEl.checked === DEFAULTS.enabled &&
     fadeOutEnabledEl.checked === DEFAULTS.fadeOutEnabled &&
@@ -202,6 +206,9 @@ function loadPrefs() {
 }
 
 applyI18n();
+for (const el of [resetFadeOutEl, resetFadeInEl]) {
+  el.title = el.ariaLabel = t("resetDefaults", "Reset to defaults");
+}
 loadPrefs();
 
 enabledEl.addEventListener("change", () => {
@@ -227,5 +234,16 @@ fadeInEl.addEventListener("input", () => {
 
 resetEl.addEventListener("click", () => {
   applyStored(DEFAULTS);
+  save();
+});
+
+resetFadeOutEl.addEventListener("click", () => {
+  fadeOutEl.value = String(DEFAULTS.fadeOutMs);
+  syncLabels();
+  save();
+});
+resetFadeInEl.addEventListener("click", () => {
+  fadeInEl.value = String(DEFAULTS.fadeInMs);
+  syncLabels();
   save();
 });

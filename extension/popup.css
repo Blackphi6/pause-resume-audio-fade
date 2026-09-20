@@ -119,6 +119,33 @@ input[type="checkbox"] {
   flex-shrink: 0;
 }
 
+.value-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reset-one {
+  padding: 0 6px;
+  border: 1px solid var(--track);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.reset-one:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.reset-one:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
 .reset {
   width: 100%;
   margin-bottom: 10px;
