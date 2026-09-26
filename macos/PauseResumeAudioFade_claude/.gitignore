@@ -1,0 +1,4 @@
+.build/
+dist/
+skill-state/
+.DS_Store
