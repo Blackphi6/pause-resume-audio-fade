@@ -1,23 +1,32 @@
 #!/bin/bash
-# Builds the release binary and assembles it into a double-clickable
-# PauseResumeAudioFade.app (arm64, ad-hoc signed -- no paid Apple Developer
-# account is required to build and run it locally).
+# .app を組み立てて ad-hoc 署名する。使い方: ./build.sh [--install]
+#   --install : /Applications/PauseResumeAudioFade.app に置く（起動中なら終了してから差し替え）
 set -euo pipefail
 cd "$(dirname "$0")"
 
-APP_NAME="Pause Resume Audio Fade"
-BIN_NAME="PauseResumeAudioFade"
-OUT_DIR="dist"
-APP_DIR="$OUT_DIR/$APP_NAME.app"
+APP_NAME="PauseResumeAudioFade"
+BUNDLE_ID="io.github.blackphi6.PauseResumeAudioFade"
+APP_BUNDLE="Pause Resume Audio Fade"
+APP="dist/${APP_BUNDLE}.app"
 
 swift build -c release --arch arm64
+BIN="$(swift build -c release --arch arm64 --show-bin-path)/${APP_NAME}"
 
-rm -rf "$APP_DIR"
-mkdir -p "$APP_DIR/Contents/MacOS"
-cp ".build/arm64-apple-macosx/release/$BIN_NAME" "$APP_DIR/Contents/MacOS/$BIN_NAME"
-cp "Info.plist" "$APP_DIR/Contents/Info.plist"
+rm -rf "$APP"
+mkdir -p "$APP/Contents/MacOS"
+cp "$BIN" "$APP/Contents/MacOS/${APP_NAME}"
+cp Info.plist "$APP/Contents/Info.plist"
 
-codesign --force --deep --sign - "$APP_DIR"
+# ad-hoc 署名。識別子を固定して、再ビルドしても TCC の対象アプリとして同じ名前で扱われるようにする
+codesign --force --sign - --identifier "$BUNDLE_ID" "$APP"
+codesign --verify --strict "$APP"
+echo "built: $APP"
 
-echo "Built: $APP_DIR"
-echo "First launch: right-click the app -> Open, since it isn't notarized by Apple."
+if [[ "${1:-}" == "--install" ]]; then
+    DEST="/Applications/${APP_BUNDLE}.app"
+    pkill -x "$APP_NAME" 2>/dev/null || true
+    sleep 0.5
+    rm -rf "$DEST"
+    cp -R "$APP" "$DEST"
+    echo "installed: $DEST"
+fi

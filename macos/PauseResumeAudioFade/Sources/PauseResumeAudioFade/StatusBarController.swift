@@ -1,155 +1,131 @@
 import AppKit
 
-/// Menu bar UI: a status item with a dropdown for live diagnostics, the
-/// master toggle, and fade-duration presets. No dock icon, no window --
-/// this app only exists in the menu bar.
-final class StatusBarController: NSObject {
-    private let item: NSStatusItem
-    private let durationPresetsMs = [150, 350, 600, 1000, 2000]
+/// メニューバーの UI。状態表示と設定変更だけを担当し、音声処理は AppDelegate 経由で行う
+final class StatusBarController: NSObject, NSMenuDelegate {
+    /// メニューを開くたびに最新の状態を取りに行く
+    struct Snapshot {
+        var statusLine: String
+        var detailLine: String?
+        var permissionDenied: Bool
+        var loginItemEnabled: Bool
+        var loginItemNote: String?
+    }
 
-    private var detectionStatusItem: NSMenuItem!
-    private var deviceStatusItem: NSMenuItem!
-    private var playbackStatusItem: NSMenuItem!
-    private var enabledMenuItem: NSMenuItem!
-    private var fadeOutItems: [NSMenuItem] = []
-    private var fadeInItems: [NSMenuItem] = []
+    var snapshot: () -> Snapshot = {
+        Snapshot(statusLine: "", detailLine: nil, permissionDenied: false, loginItemEnabled: false, loginItemNote: nil)
+    }
+    var onToggleEnabled: (Bool) -> Void = { _ in }
+    var onSelectFadeOutMode: (FadeOutMode) -> Void = { _ in }
+    var onToggleFadeIn: (Bool) -> Void = { _ in }
+    var onToggleSeekFadeIn: (Bool) -> Void = { _ in }
+    var onSelectFadeInMs: (Int) -> Void = { _ in }
+    var onToggleLoginItem: (Bool) -> Void = { _ in }
+    var onOpenPermissionSettings: () -> Void = {}
+    var onQuit: () -> Void = {}
 
-    var onEnabledChanged: ((Bool) -> Void)?
-    var onFadeOutMsChanged: ((Int) -> Void)?
-    var onFadeInMsChanged: ((Int) -> Void)?
+    private let preferences: Preferences
+    private let statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    /// NSMenuItem の target は弱参照なので、メニューを作り直すまで保持しておく
+    private var actions: [MenuAction] = []
 
-    init(volumeControlSupported: Bool) {
-        item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+    /// 検証用（--dump-menu）にメニューを取り出す
+    var menu: NSMenu? { statusItem.menu }
+
+    init(preferences: Preferences) {
+        self.preferences = preferences
         super.init()
-
-        if let button = item.button {
-            button.image = NSImage(
-                systemSymbolName: "waveform",
-                accessibilityDescription: "Pause Resume Audio Fade"
-            )
+        if let button = statusItem.button {
+            button.image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "PauseResumeAudioFade")
             button.image?.isTemplate = true
         }
-
-        item.menu = buildMenu()
-        syncFrom(preferences: .shared)
-    }
-
-    func syncFrom(preferences: Preferences) {
-        enabledMenuItem.state = preferences.enabled ? .on : .off
-        updateCheckmarks(items: fadeOutItems, presets: durationPresetsMs, current: preferences.fadeOutMs)
-        updateCheckmarks(items: fadeInItems, presets: durationPresetsMs, current: preferences.fadeInMs)
-    }
-
-    /// Refreshed at launch and every time detection or device state changes,
-    /// so "why isn't this working" is answerable by just opening the menu
-    /// instead of needing Console.app.
-    func updateDiagnostics(mediaRemoteAvailable: Bool, deviceName: String, deviceSupported: Bool, isPlaying: Bool?) {
-        detectionStatusItem.title = mediaRemoteAvailable
-            ? "検知: 利用可能"
-            : "検知: 利用不可（この macOS では再生検知APIが見つかりません）"
-
-        deviceStatusItem.title = deviceSupported
-            ? "出力デバイス: \(deviceName)（音量フェード対応）"
-            : "出力デバイス: \(deviceName)（このデバイスは音量フェードに非対応）"
-
-        switch isPlaying {
-        case .some(true):
-            playbackStatusItem.title = "現在の再生状態: 再生中"
-        case .some(false):
-            playbackStatusItem.title = "現在の再生状態: 一時停止中 / 何も再生していない"
-        case .none:
-            playbackStatusItem.title = "現在の再生状態: 不明"
-        }
-    }
-
-    private func updateCheckmarks(items: [NSMenuItem], presets: [Int], current: Int) {
-        for (item, ms) in zip(items, presets) {
-            item.state = ms == current ? .on : .off
-        }
-    }
-
-    private func buildMenu() -> NSMenu {
         let menu = NSMenu()
-
-        let title = NSMenuItem(title: "Pause Resume Audio Fade", action: nil, keyEquivalent: "")
-        title.isEnabled = false
-        menu.addItem(title)
-        menu.addItem(.separator())
-
-        detectionStatusItem = disabledInfoItem()
-        deviceStatusItem = disabledInfoItem()
-        playbackStatusItem = disabledInfoItem()
-        menu.addItem(detectionStatusItem)
-        menu.addItem(deviceStatusItem)
-        menu.addItem(playbackStatusItem)
-        menu.addItem(.separator())
-
-        enabledMenuItem = NSMenuItem(
-            title: "有効にする",
-            action: #selector(toggleEnabled),
-            keyEquivalent: ""
-        )
-        enabledMenuItem.target = self
-        menu.addItem(enabledMenuItem)
-        menu.addItem(.separator())
-
-        let fadeOutMenu = NSMenu()
-        fadeOutItems = durationPresetsMs.map { ms in
-            let item = NSMenuItem(title: "\(ms) ms", action: #selector(selectFadeOut(_:)), keyEquivalent: "")
-            item.target = self
-            item.representedObject = ms
-            fadeOutMenu.addItem(item)
-            return item
-        }
-        let fadeOutParent = NSMenuItem(title: "フェードアウト（一時停止）", action: nil, keyEquivalent: "")
-        fadeOutParent.submenu = fadeOutMenu
-        menu.addItem(fadeOutParent)
-
-        let fadeInMenu = NSMenu()
-        fadeInItems = durationPresetsMs.map { ms in
-            let item = NSMenuItem(title: "\(ms) ms", action: #selector(selectFadeIn(_:)), keyEquivalent: "")
-            item.target = self
-            item.representedObject = ms
-            fadeInMenu.addItem(item)
-            return item
-        }
-        let fadeInParent = NSMenuItem(title: "フェードイン（再開）", action: nil, keyEquivalent: "")
-        fadeInParent.submenu = fadeInMenu
-        menu.addItem(fadeInParent)
-
-        menu.addItem(.separator())
-        let quit = NSMenuItem(title: "終了", action: #selector(quit), keyEquivalent: "q")
-        quit.target = self
-        menu.addItem(quit)
-
-        return menu
+        menu.delegate = self
+        statusItem.menu = menu
+        rebuild(menu)
     }
 
-    private func disabledInfoItem() -> NSMenuItem {
-        let item = NSMenuItem(title: "...", action: nil, keyEquivalent: "")
+    func menuWillOpen(_ menu: NSMenu) {
+        rebuild(menu)
+    }
+
+    private func rebuild(_ menu: NSMenu) {
+        menu.removeAllItems()
+        actions.removeAll()
+        let state = snapshot()
+
+        menu.addItem(label(state.statusLine))
+        if let detail = state.detailLine { menu.addItem(label(detail)) }
+        if state.permissionDenied {
+            menu.addItem(action("システム音声の録音を許可…", checked: false) { [weak self] in self?.onOpenPermissionSettings() })
+        }
+        menu.addItem(.separator())
+
+        menu.addItem(action("有効にする", checked: preferences.enabled) { [weak self] in
+            guard let self else { return }
+            self.onToggleEnabled(!self.preferences.enabled)
+        })
+        menu.addItem(.separator())
+
+        let fadeOut = NSMenuItem(title: "フェードアウト（一時停止）", action: nil, keyEquivalent: "")
+        fadeOut.toolTip = "一時停止は横取りできないため、出力を少し遅らせて停止の直前をさかのぼってフェードします。長いほど滑らかですが、映像との音ズレが増えます。"
+        let fadeOutMenu = NSMenu()
+        for mode in FadeOutMode.allCases {
+            fadeOutMenu.addItem(action(mode.title, checked: preferences.fadeOutMode == mode) { [weak self] in
+                self?.onSelectFadeOutMode(mode)
+            })
+        }
+        fadeOut.submenu = fadeOutMenu
+        menu.addItem(fadeOut)
+
+        menu.addItem(action("再開時にフェードイン", checked: preferences.fadeInEnabled) { [weak self] in
+            guard let self else { return }
+            self.onToggleFadeIn(!self.preferences.fadeInEnabled)
+        })
+        menu.addItem(action("シーク時にフェードイン", checked: preferences.seekFadeInEnabled) { [weak self] in
+            guard let self else { return }
+            self.onToggleSeekFadeIn(!self.preferences.seekFadeInEnabled)
+        })
+
+        let fadeIn = NSMenuItem(title: "フェードインの長さ", action: nil, keyEquivalent: "")
+        let fadeInMenu = NSMenu()
+        for ms in Preferences.fadeInChoicesMs {
+            fadeInMenu.addItem(action("\(ms) ms", checked: preferences.fadeInMs == ms) { [weak self] in
+                self?.onSelectFadeInMs(ms)
+            })
+        }
+        fadeIn.submenu = fadeInMenu
+        menu.addItem(fadeIn)
+        menu.addItem(.separator())
+
+        let login = action("ログイン時に起動", checked: state.loginItemEnabled) { [weak self] in
+            self?.onToggleLoginItem(!state.loginItemEnabled)
+        }
+        if let note = state.loginItemNote { login.toolTip = note }
+        menu.addItem(login)
+        menu.addItem(.separator())
+
+        menu.addItem(label("バージョン \(Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?")"))
+        menu.addItem(action("終了", checked: false) { [weak self] in self?.onQuit() })
+    }
+
+    private func label(_ title: String) -> NSMenuItem {
+        let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
         item.isEnabled = false
         return item
     }
 
-    @objc private func toggleEnabled() {
-        let newValue = enabledMenuItem.state != .on
-        enabledMenuItem.state = newValue ? .on : .off
-        onEnabledChanged?(newValue)
+    private func action(_ title: String, checked: Bool, _ handler: @escaping () -> Void) -> NSMenuItem {
+        let wrapper = MenuAction(handler)
+        actions.append(wrapper)
+        let item = NSMenuItem(title: title, action: #selector(MenuAction.run), keyEquivalent: "")
+        item.target = wrapper
+        item.state = checked ? .on : .off
+        return item
     }
+}
 
-    @objc private func selectFadeOut(_ sender: NSMenuItem) {
-        guard let ms = sender.representedObject as? Int else { return }
-        updateCheckmarks(items: fadeOutItems, presets: durationPresetsMs, current: ms)
-        onFadeOutMsChanged?(ms)
-    }
-
-    @objc private func selectFadeIn(_ sender: NSMenuItem) {
-        guard let ms = sender.representedObject as? Int else { return }
-        updateCheckmarks(items: fadeInItems, presets: durationPresetsMs, current: ms)
-        onFadeInMsChanged?(ms)
-    }
-
-    @objc private func quit() {
-        NSApp.terminate(nil)
-    }
+private final class MenuAction: NSObject {
+    private let handler: () -> Void
+    init(_ handler: @escaping () -> Void) { self.handler = handler }
+    @objc func run() { handler() }
 }

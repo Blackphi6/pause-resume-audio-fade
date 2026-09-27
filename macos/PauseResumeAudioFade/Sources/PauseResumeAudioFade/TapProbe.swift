@@ -10,7 +10,7 @@ final class TapProbe {
     private var tapID = AudioObjectID(kAudioObjectUnknown)
     private var aggregateID = AudioObjectID(kAudioObjectUnknown)
     private var procID: AudioDeviceIOProcID?
-    private let queue = DispatchQueue(label: "pauseresume.claude.probe", qos: .userInteractive)
+    private let queue = DispatchQueue(label: "pauseresume.probe", qos: .userInteractive)
     private var rows: UnsafeMutablePointer<Float>
     private let capacity: Int
     private(set) var count = 0
@@ -37,7 +37,7 @@ final class TapProbe {
 
     func start(target: AudioObjectID) throws {
         let description = CATapDescription(stereoMixdownOfProcesses: [target])
-        description.name = "PauseResumeAudioFade_claude probe"
+        description.name = "PauseResumeAudioFade probe"
         description.uuid = UUID()
         description.muteBehavior = .unmuted
         description.isPrivate = true
@@ -46,7 +46,7 @@ final class TapProbe {
 
         let outUID = try CoreAudioUtil.deviceUID(try CoreAudioUtil.defaultOutputDevice())
         let dict: [String: Any] = [
-            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade_claude probe",
+            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade probe",
             kAudioAggregateDeviceUIDKey: UUID().uuidString,
             kAudioAggregateDeviceMainSubDeviceKey: outUID,
             kAudioAggregateDeviceIsPrivateKey: true,

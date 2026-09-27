@@ -4,7 +4,7 @@
 入力ピークと出力ピーク（コールバックごと）を CSV で受け取って判定する。
 
 イヤホン利用を想定し、テスト音の振幅は 0.03 (-30 dBFS) に固定。システム音量は触らない。
-使い方: python3 scripts/e2e_check.py [--app dist/PauseResumeAudioFade_claude.app]
+使い方: python3 scripts/e2e_check.py [--app dist/PauseResumeAudioFade.app]
 """
 import argparse
 import csv
@@ -143,7 +143,7 @@ def analyze_probe(rows):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--app", default="dist/PauseResumeAudioFade_claude.app")
+    ap.add_argument("--app", default="dist/Pause Resume Audio Fade.app")
     ap.add_argument("--normal", action="store_true",
                     help="CLI モードではなく通常起動（メニューバーアプリ本来の経路）を検証する。本体の出力はプローブだけで判定")
     args = ap.parse_args()

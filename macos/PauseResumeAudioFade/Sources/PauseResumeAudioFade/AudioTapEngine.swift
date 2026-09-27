@@ -34,7 +34,7 @@ final class AudioTapEngine {
     private var aggregateID = AudioObjectID(kAudioObjectUnknown)
     private var procID: AudioDeviceIOProcID?
     private var processor: FadeProcessor?
-    private let ioQueue = DispatchQueue(label: "pauseresume.claude.io", qos: .userInteractive)
+    private let ioQueue = DispatchQueue(label: "pauseresume.io", qos: .userInteractive)
 
     private(set) var info: RunningInfo?
     var isRunning: Bool { info != nil }
@@ -91,7 +91,7 @@ final class AudioTapEngine {
         let selfObject = try ensureOwnProcessObject()
 
         let description = CATapDescription(stereoGlobalTapButExcludeProcesses: [selfObject])
-        description.name = "PauseResumeAudioFade_claude"
+        description.name = "PauseResumeAudioFade"
         description.uuid = UUID()
         description.muteBehavior = .mutedWhenTapped
         description.isPrivate = true
@@ -110,7 +110,7 @@ final class AudioTapEngine {
         tapIsPlanar = (format.mFormatFlags & kAudioFormatFlagIsNonInterleaved) != 0
 
         let aggregate: [String: Any] = [
-            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade_claude tap",
+            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade tap",
             kAudioAggregateDeviceUIDKey: UUID().uuidString,
             kAudioAggregateDeviceMainSubDeviceKey: outUID,
             kAudioAggregateDeviceIsPrivateKey: true,
@@ -173,7 +173,7 @@ final class AudioTapEngine {
         if object != kAudioObjectUnknown { return object }
 
         let bootstrap = CATapDescription(stereoGlobalTapButExcludeProcesses: [AudioObjectID]())
-        bootstrap.name = "PauseResumeAudioFade_claude bootstrap"
+        bootstrap.name = "PauseResumeAudioFade bootstrap"
         bootstrap.uuid = UUID()
         bootstrap.muteBehavior = .unmuted
         bootstrap.isPrivate = true
@@ -185,7 +185,7 @@ final class AudioTapEngine {
         let outUID = try wrap { try CoreAudioUtil.deviceUID(try CoreAudioUtil.defaultOutputDevice()) }
         var agg = AudioObjectID(kAudioObjectUnknown)
         let dict: [String: Any] = [
-            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade_claude bootstrap",
+            kAudioAggregateDeviceNameKey: "PauseResumeAudioFade bootstrap",
             kAudioAggregateDeviceUIDKey: UUID().uuidString,
             kAudioAggregateDeviceMainSubDeviceKey: outUID,
             kAudioAggregateDeviceIsPrivateKey: true,

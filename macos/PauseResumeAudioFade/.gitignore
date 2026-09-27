@@ -1,3 +1,4 @@
 .build/
 dist/
-.swiftpm/
+skill-state/
+.DS_Store

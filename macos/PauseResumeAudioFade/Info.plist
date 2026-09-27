@@ -2,29 +2,25 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleName</key>
-	<string>Pause Resume Audio Fade</string>
-	<key>CFBundleDisplayName</key>
-	<string>Pause Resume Audio Fade</string>
-	<key>CFBundleIdentifier</key>
-	<string>io.github.blackphi6.PauseResumeAudioFade</string>
-	<key>CFBundleExecutable</key>
-	<string>PauseResumeAudioFade</string>
-	<key>CFBundlePackageType</key>
-	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
-	<key>CFBundleVersion</key>
-	<string>1.0.1</string>
-	<key>LSMinimumSystemVersion</key>
-	<string>13.0</string>
-	<key>LSUIElement</key>
-	<true/>
-	<key>NSHighResolutionCapable</key>
-	<true/>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.utilities</string>
-	<key>NSHumanReadableCopyright</key>
-	<string>Independent project. Not affiliated with any streaming service or Apple.</string>
+    <key>CFBundleExecutable</key>
+    <string>PauseResumeAudioFade</string>
+    <key>CFBundleIdentifier</key>
+    <string>io.github.blackphi6.PauseResumeAudioFade</string>
+    <key>CFBundleName</key>
+    <string>Pause Resume Audio Fade</string>
+    <key>CFBundleDisplayName</key>
+    <string>Pause Resume Audio Fade</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+    <string>2.0.0</string>
+    <key>CFBundleVersion</key>
+    <string>2.0.0</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.2</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSAudioCaptureUsageDescription</key>
+    <string>ほかのアプリの再生音を受け取り、一時停止・再開・シークの前後にフェードを掛けて出力するために使います。音声は保存も送信もしません。</string>
 </dict>
 </plist>

@@ -1,113 +1,71 @@
 # Pause Resume Audio Fade for Mac
 
-A menu bar utility for Apple Silicon Macs that softens the abrupt volume jump
-when you pause and resume media — system-wide, not tied to one browser or
-site. It's the same idea as the [Chrome extension](../../extension) in this
-repo, generalized: instead of fading one `<video>` element's volume, it fades
-your Mac's actual output volume whenever *anything* on the system starts or
-stops playing (Music, Safari, Chrome, VLC, QuickTime, Spotify, ...).
+Chrome 拡張「Pause Resume Audio Fade」の機能（一時停止・再開・シークでの音のフェード）を、
+**どのアプリの再生音にも**効かせる Mac 用メニューバーアプリです（v2.0 以降）。
 
-## How it works
+v1.x（`mac-v1.*` のリリース）は MediaRemote とシステム音量を使う方式で、対応アプリが限られ、
+一時停止の「あと」にしか反応できませんでした。v2.0 で Core Audio のプロセスタップ方式に作り直しています。
 
-- **Play/pause detection**: uses the same system-wide "Now Playing" signal
-  that Control Center's Now Playing widget reads, via the private
-  `MediaRemote.framework`. This is undocumented API — see [Limitations](#limitations).
-- **Fading**: ramps the current default output device's volume
-  (`kAudioDevicePropertyVolumeScalar` via CoreAudio) down to 0 on pause and
-  back up to whatever it was before on resume. This is the exact same value
-  the volume keys and the Control Center slider control.
-- If you (or another app) change the volume manually while a fade is
-  running, the fade cancels and adopts your new level as the new baseline —
-  it never fights you for control of the volume.
+## 仕組み
 
-## Requirements
+Chrome 拡張は `pause()` を横取りして、止める前にフェードします。ほかのアプリの一時停止は横取りできないため、
+次の方式にしています。
 
-- Apple Silicon Mac (arm64), macOS 13 (Ventura) or later.
-- No paid Apple Developer account needed to build or run it yourself.
+- Core Audio の **プロセスタップ**（macOS 14.2+）で、自分以外の全アプリの音を受け取ります。
+  元の音はタップ中だけミュートされ、このアプリが既定の出力デバイスへ流し直します（終了すればすぐ元に戻ります）。
+- **フェードイン（再開・シーク）**: 無音のあとに音が戻った瞬間を検知し、その先頭から遅延ゼロでゲインを上げます。
+  無音が 250ms 以上なら「再開」、60〜250ms なら「シーク」として扱います。
+- **フェードアウト（一時停止）**: 出力を先読み分だけ遅らせておき、無音が 15ms 続いたと確定した時点で、
+  まだ出力していない直前の区間にさかのぼってフェードを掛けます。
 
-## Build
+無音の判定は −80 dBFS 以下（一時停止中のプレイヤーはほぼ完全な 0 を出す）です。
+
+## 制限（必ず読んでください）
+
+- **フェードアウトの長さは先読み遅延で決まります。** 標準は遅延 100ms・フェード約 84ms です
+  （Chrome 拡張の 350ms より短い）。映像を見るときの音ズレは 100ms 程度なら気づきにくい範囲ですが、
+  気になる場合はメニューの「フェードアウト」を「オフ（遅延なし）」にすると、遅延ゼロでフェードインだけ効きます。
+  音楽だけ聴くなら「音楽向け」（遅延 350ms・フェード約 334ms）で拡張と同じ長さになります。
+- 音の中に 15ms 以上の**デジタル無音**があるとフェードが掛かります（チップチューン等の休符、短い通知音の前の無音など）。
+  通知音が 300ms かけてふわっと立ち上がる、という副作用があります。
+- システム音量・ミュート・出力先の切り替えはそのまま使えます（出力デバイスの手前で処理しているため）。
+- Bluetooth 出力・出力デバイスの切り替え・スリープ復帰は、変化を検知してエンジンを作り直す実装にしていますが、
+  実機で確認したのは有線ヘッドフォン出力のみです。
+- 音声は保存も送信もしません。
+
+## 必要なもの
+
+- Apple Silicon Mac、macOS 14.2 以降
+- 初回起動時、「ほかのアプリの音声へのアクセス」の許可を求められたら許可してください
+  （システム設定 > プライバシーとセキュリティ > 画面収録とシステム音声録音 > システム音声の録音のみ）。
+- ad-hoc 署名（未公証）のため、初回はアプリを右クリック → 開く で起動してください。
+
+## ビルドとインストール
 
 ```bash
 cd macos/PauseResumeAudioFade
-./build.sh
+./build.sh              # dist/Pause Resume Audio Fade.app を作る
+./build.sh --install    # /Applications/Pause Resume Audio Fade.app に置く
 ```
 
-This produces `dist/Pause Resume Audio Fade.app`. It's ad-hoc signed (not
-notarized by Apple), so the first time you open it, **right-click the app →
-Open** instead of double-clicking, to get past Gatekeeper's "unidentified
-developer" warning. After that first run, it opens normally.
+## 使い方
 
-## Use
+Dock には出ず、メニューバーの波形アイコンから操作します。
 
-There's no window — it lives entirely in the menu bar (a waveform icon).
-Click it for:
+- **有効にする**: 全体のオン/オフ（オフにするとタップを破棄し、元の音声経路に戻ります）
+- **フェードアウト（一時停止）**: 先読み遅延とフェード長のプリセット
+- **再開時 / シーク時にフェードイン**: それぞれオン/オフ
+- **フェードインの長さ**: 150〜2000 ms
+- **ログイン時に起動**
 
-- **有効にする** (Enable) — master on/off
-- **フェードアウト（一時停止）** / **フェードイン（再開）** — pick a fade
-  duration (150 ms – 2000 ms) for pause and resume independently
-- **終了** (Quit)
+## テスト
 
-Settings persist across launches (`UserDefaults`).
-
-## Troubleshooting
-
-Click the menu bar icon and read the three status lines at the top of the
-menu -- they tell you exactly which part isn't working:
-
-- **検知: 利用不可** -- play/pause detection itself isn't available on this
-  macOS version (see [Limitations](#limitations) about the private API).
-- **出力デバイス: ...（非対応）** -- your current output device doesn't
-  expose a settable system volume to apps; fading can't work regardless of
-  the other settings.
-- **現在の再生状態** -- reflects what the app currently thinks is
-  playing/paused. If this doesn't change when you pause/resume something,
-  detection isn't picking up that particular app/content (some apps only
-  publish "Now Playing" info when driven from their own UI, not when
-  controlled via automation/scripting).
-
-**Can't find the icon at all?** If you have many menu bar apps installed,
-macOS can push new, low-priority status items off the visible edge of a
-crowded menu bar (there's no "..." overflow indicator on every macOS
-version). Try quitting a few other menu bar apps, or use a menu bar
-manager (e.g. Ice, Bartender) to check the hidden/overflow section.
-
-No extra system permission (Accessibility, Automation, Screen Recording,
-etc.) was needed in testing -- if a permission prompt *does* appear for you,
-it's worth reporting as an issue, since that would be new/unexpected
-behavior for the APIs this app uses.
-
-## Limitations
-
-- **Affects the whole system's output volume**, not just the app you
-  paused. If something else is making sound when you pause your video (a
-  notification, a call), it gets ducked too. There's no per-app audio
-  routing here — doing that properly needs a virtual audio driver, which is
-  out of scope for this tool.
-- **`MediaRemote.framework` is a private, undocumented Apple framework.**
-  Symbol names and behavior are not guaranteed across macOS versions; this
-  app loads every symbol defensively at runtime (via `dlopen`/`dlsym`) and
-  simply disables play/pause detection if something is missing, rather than
-  crashing. If a future macOS release breaks it, that's the first place to
-  look (`Sources/PauseResumeAudioFade/MediaRemoteBridge.swift`).
-- **Some output devices don't expose a settable volume** (e.g. certain
-  digital/HDMI outputs) — on those, the app detects this at launch and the
-  menu shows a notice instead of silently doing nothing.
-- Not notarized/signed with a paid Apple Developer ID, so Gatekeeper will
-  warn on first launch (see [Build](#build) above for the one-time bypass).
-
-## Project layout
-
-Plain Swift Package Manager, no Xcode project file needed (though you can
-`open Package.swift` in Xcode if you prefer):
-
+```bash
+swift test                              # DSP（FadeCore）の単体テスト
+python3 scripts/e2e_check.py            # 実機 E2E（CLI モード: 本体内の入出力ピーク + 別プロセスのプローブ）
+python3 scripts/e2e_check.py --normal   # 通常起動（メニューバーアプリ本来の経路）を別プロセスのプローブで検証
 ```
-Sources/PauseResumeAudioFade/
-  main.swift               entry point
-  AppDelegate.swift         wires everything together
-  MediaRemoteBridge.swift   system-wide play/pause detection (private API)
-  SystemVolumeFader.swift   CoreAudio volume fade + external-change detection
-  Preferences.swift         UserDefaults-backed settings
-  StatusBarController.swift menu bar UI
-Info.plist                  app metadata (LSUIElement = menu-bar-only)
-build.sh                    builds + assembles + ad-hoc signs the .app
-```
+
+E2E は極小振幅（−30 dBFS）のテスト音を `afplay` で鳴らし、`SIGSTOP`/`SIGCONT` で
+「別アプリが一時停止・再開・シークした」状況を作って、実際の出力のピーク推移を判定します。
+システム音量は変更しません。再生中の他の音があると判定が乱れるため、実行中は他のアプリの再生を止めてください。
