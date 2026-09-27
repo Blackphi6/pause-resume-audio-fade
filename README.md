@@ -74,9 +74,9 @@ YouTube、TVer、ABEMA では動作を確認しています。一部の DRM 配�
 
 ## Mac ネイティブアプリ
 
-Chrome 拡張とは別に、Apple Silicon Mac 向けのメニューバーアプリもあります: [macos/PauseResumeAudioFade](./macos/PauseResumeAudioFade)
+Chrome 拡張とは別リポジトリで、Apple Silicon Mac 向けのメニューバーアプリもあります: [pause-resume-audio-fade-mac](https://github.com/Blackphi6/pause-resume-audio-fade-mac)
 
-ブラウザに限らず、Mac 上のどのアプリの再生音にも一時停止・再開・シークのフェードを掛けます（Core Audio のプロセスタップ方式、macOS 14.2 以降）。仕組みと制限（フェードアウトは先読み遅延の範囲、権限、対応確認済みの環境など）は同フォルダの README を参照してください。
+ブラウザに限らず、Mac 上のどのアプリの再生音にも一時停止・再開・シークのフェードを掛けます（Core Audio のプロセスタップ方式、macOS 14.2 以降）。仕組みと制限は同リポジトリの README を参照してください。
 
 ## Privacy
 
