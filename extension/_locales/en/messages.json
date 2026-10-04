@@ -62,5 +62,21 @@
   "unitMs": {
     "message": "ms",
     "description": "Millisecond unit shown next to duration values."
+  },
+  "promoTitle": {
+    "message": "Using a Mac?",
+    "description": "Heading of the Mac app promo banner in the popup."
+  },
+  "promoText": {
+    "message": "The new Mac app fades audio in every app, not just the browser (macOS 14.2+). Once it's installed, you can turn this extension off.",
+    "description": "Body of the Mac app promo banner in the popup."
+  },
+  "promoCta": {
+    "message": "Get the Mac app",
+    "description": "Link button text that opens the Mac app download page."
+  },
+  "promoDismiss": {
+    "message": "Dismiss",
+    "description": "Tooltip for the button that closes the promo banner."
   }
 }

@@ -211,6 +211,23 @@ for (const el of [resetFadeOutEl, resetFadeInEl]) {
 }
 loadPrefs();
 
+// Mac用アプリの案内。判定は端末内の platform 文字列だけで、外部には何も送らない。
+const macPromoEl = document.getElementById("macPromo");
+const macPromoCloseEl = document.getElementById("macPromoClose");
+macPromoCloseEl.title = macPromoCloseEl.ariaLabel = t("promoDismiss", "Dismiss");
+const isMac = /^Mac/i.test(
+  (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || ""
+);
+if (isMac) {
+  chrome.storage.local.get({ macPromoDismissed: false }, (s) => {
+    macPromoEl.hidden = s.macPromoDismissed === true;
+  });
+}
+macPromoCloseEl.addEventListener("click", () => {
+  macPromoEl.hidden = true;
+  chrome.storage.local.set({ macPromoDismissed: true });
+});
+
 enabledEl.addEventListener("change", () => {
   syncDisabled();
   save();

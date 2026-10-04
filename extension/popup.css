@@ -172,3 +172,62 @@ input[type="checkbox"] {
   color: var(--muted);
   font-size: 11px;
 }
+
+.promo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 12px 28px 12px 12px;
+  border: 1px solid #2e6fd6;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(46, 158, 255, 0.18), rgba(10, 99, 214, 0.18));
+}
+
+.promo[hidden] {
+  display: none;
+}
+
+.promo-title {
+  margin: 0;
+  font-weight: 650;
+}
+
+.promo-text {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.promo-cta {
+  align-self: flex-start;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: #2e9eff;
+  color: #04182f;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.promo-cta:hover {
+  background: #5ab4ff;
+}
+
+.promo-close {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  padding: 0 6px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.promo-close:hover {
+  color: var(--text);
+}

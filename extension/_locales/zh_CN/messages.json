@@ -62,5 +62,21 @@
   "unitMs": {
     "message": "毫秒",
     "description": "Millisecond unit shown next to duration values."
+  },
+  "promoTitle": {
+    "message": "正在使用 Mac？",
+    "description": "Heading of the Mac app promo banner in the popup."
+  },
+  "promoText": {
+    "message": "全新的 Mac 应用可对所有应用的声音进行淡入淡出，而不仅限于浏览器（需要 macOS 14.2 及以上）。安装后即可关闭本扩展。",
+    "description": "Body of the Mac app promo banner in the popup."
+  },
+  "promoCta": {
+    "message": "获取 Mac 应用",
+    "description": "Link button text that opens the Mac app download page."
+  },
+  "promoDismiss": {
+    "message": "关闭",
+    "description": "Tooltip for the button that closes the promo banner."
   }
 }

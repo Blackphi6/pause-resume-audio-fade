@@ -1,9 +1,9 @@
-# ストア貼り付け専用（1.8.1）
+# ストア貼り付け専用（1.9.0）
 
 ダッシュボード「ストアの掲載情報」へ、**グレーの枠の中だけ**コピーします。
 ` ```text ` という文字は貼らないでください。
 
-**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.8.1 の ZIP をアップロード** してください（すでに修正済み）。
+**パッケージの概要は、ここからは変えられません。** `manifest.json` の `description`（各言語の `extDescription`）から自動で入ります。概要を直すには **1.9.0 の ZIP をアップロード** してください（すでに修正済み）。
 
 **説明（長文）だけ**、下の枠を4言語ぶん貼り直します。サイト名を長く並べないでください（キーワード スパム）。
 
@@ -31,7 +31,7 @@ Test instructions: install and open https://www.youtube.com/ (no login required)
 
 ### パッケージの概要
 
-**編集不可。** ZIP 1.8.1 を上げると、次の文に自動で変わります。
+**編集不可。** ZIP 1.9.0 を上げると、次の文に自動で変わります。
 
 ```text
 ブラウザの動画プレイヤーで、一時停止・再開・シーク時に音量を短くフェードします。
@@ -48,7 +48,7 @@ Test instructions: install and open https://www.youtube.com/ (no login required)
 
 【今回の更新】
 
-アイコンを刷新しました（機能面の変更はありません）。
+Mac をお使いの方向けに、ポップアップに Mac 用デスクトップアプリの案内を追加しました（Mac のブラウザでのみ表示され、× で閉じられます）。アイコンも刷新しました。
 
 使い始めるときは、いま見ているタブをいちど再読み込みしてください。
 
@@ -116,7 +116,7 @@ Test instructions: install and open https://www.youtube.com/ (no login required)
 
 ### Package summary
 
-**Read-only on the dashboard.** Upload ZIP 1.8.1; it becomes:
+**Read-only on the dashboard.** Upload ZIP 1.9.0; it becomes:
 
 ```text
 Softly fade audio on pause, resume, and seek in browser video players.
@@ -131,7 +131,7 @@ Pausing a video can cut the sound off abruptly, and resuming can feel like the v
 
 [What's new]
 
-Refreshed the icon (no functional changes). Reload the tab you are watching after updating.
+Added a dismissible note in the popup (shown on Mac only) about the new Mac desktop app, which works in every app. Also refreshed the icon. Reload the tab you are watching after updating.
 
 [Features]
 
@@ -197,7 +197,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.8.1 を上げると自動で変わります。
+**編集不可。** ZIP 1.9.0 を上げると自動で変わります。
 
 ### 说明（ここだけ手で貼る）
 
@@ -208,7 +208,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-更新了图标（功能无变化）。更新后请重新加载正在观看的标签页。
+在弹出窗口中新增 Mac 桌面应用的介绍（仅在 Mac 上显示，可点击 × 关闭）。同时更新了图标。更新后请重新加载正在观看的标签页。
 
 【主要功能】
 
@@ -274,7 +274,7 @@ This extension is an independent project and is not an official product of any s
 
 ### 概要
 
-**編集不可。** ZIP 1.8.1 を上げると自動で変わります。
+**編集不可。** ZIP 1.9.0 を上げると自動で変わります。
 
 ### 說明（ここだけ手で貼る）
 
@@ -285,7 +285,7 @@ This extension is an independent project and is not an official product of any s
 
 【本次更新】
 
-更新了圖示（功能無變化）。更新後請重新載入正在觀看的分頁。
+在彈出視窗中新增 Mac 桌面應用程式的介紹（僅在 Mac 上顯示，可點擊 × 關閉）。同時更新了圖示。更新後請重新載入正在觀看的分頁。
 
 【主要功能】
 
