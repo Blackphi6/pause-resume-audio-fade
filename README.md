@@ -2,9 +2,11 @@
 
 ブラウザの動画プレイヤーで、一時停止・再開・シークの音量を短くフェードする Chrome 拡張機能です。
 
+公式サイト（聞き比べのデモ付き）: https://blackphi6.github.io/pause-resume-audio-fade/
+
 リポジトリ: https://github.com/Blackphi6/pause-resume-audio-fade
 
-現在のバージョン: **1.7.0**
+現在のバージョン: **1.9.0**
 
 ## インストール
 
