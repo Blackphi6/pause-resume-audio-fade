@@ -10,6 +10,13 @@
 
 ## インストール
 
+ストアから入れるのがかんたんです。
+
+- [Chrome ウェブストア](https://chromewebstore.google.com/detail/gjhfknoipimhbeneencjmijaooccehef)
+- [Firefox アドオン](https://addons.mozilla.org/ja/firefox/addon/pause-resume-audio-fade/)（Firefox 142 以降）
+
+ソースから入れる場合（Chrome）:
+
 1. Chrome で `chrome://extensions` を開く
 2. 右上の「デベロッパーモード」をオン
 3. 「パッケージ化されていない拡張機能を読み込む」
