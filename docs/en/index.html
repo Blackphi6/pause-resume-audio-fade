@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pause Resume Audio Fade — Soften the cut when you pause</title>
+  <meta name="description" content="Free apps and a browser extension that fade your audio down when you pause and back up when you resume. Chrome, Firefox, Mac and Windows. No ads, and your audio is never stored or sent anywhere.">
+  <link rel="icon" href="../assets/icon-48.png">
+  <link rel="canonical" href="https://blackphi6.github.io/pause-resume-audio-fade/en/">
+  <link rel="alternate" hreflang="ja" href="https://blackphi6.github.io/pause-resume-audio-fade/">
+  <link rel="alternate" hreflang="en" href="https://blackphi6.github.io/pause-resume-audio-fade/en/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pause Resume Audio Fade — Soften the cut when you pause">
+  <meta property="og:description" content="Free apps and a browser extension that fade your audio down on pause and back up on resume.">
+  <meta property="og:url" content="https://blackphi6.github.io/pause-resume-audio-fade/en/">
+  <meta property="og:image" content="https://blackphi6.github.io/pause-resume-audio-fade/assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="./"><img src="../assets/icon-128.png" alt="" width="34" height="34">Pause Resume Audio Fade</a>
+      <nav class="lang" aria-label="Language">
+        <a href="../" hreflang="ja" lang="ja">日本語</a>
+        <span aria-current="page">English</span>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1>No more harsh cut<br>when you hit pause.</h1>
+        <p class="lead">Audio fades down as you pause and back up as you resume. No sudden stop, no sudden jump.</p>
+
+        <div class="demo" id="demo" data-text='{"play":"Play","pause":"Pause","withFade":"with a {ms} ms fade","withoutFade":"without a fade","paused":"Paused {kind}","resumed":"Playing {kind}"}'>
+          <div class="stage">
+            <canvas aria-hidden="true"></canvas>
+            <p class="stage-note" data-note><span>Press Play to hear a soft chord</span></p>
+          </div>
+          <div class="controls">
+            <button class="btn-main" type="button" data-play>Play</button>
+            <div class="field" role="group" aria-label="Fade">
+              <span>Fade</span>
+              <div class="seg">
+                <button type="button" data-fade="on" aria-pressed="true">On</button>
+                <button type="button" data-fade="off" aria-pressed="false">Off</button>
+              </div>
+            </div>
+            <label class="field">
+              <span>Length</span>
+              <input type="range" min="100" max="1000" step="50" value="350" data-length>
+              <output data-length-out>350 ms</output>
+            </label>
+          </div>
+          <p class="status" role="status" aria-live="polite" data-status></p>
+          <p class="hint">Press Play, then Pause. Switch Fade to Off and pause again to hear the difference. The moment of the cut shows up as a red bar. Turn your volume down first.</p>
+        </div>
+      </div>
+
+      <section aria-labelledby="where">
+        <h2 id="where">Which one should I use?</h2>
+        <ul class="platforms">
+          <li class="platform">
+            <h3>Chrome / Firefox extension</h3>
+            <p>Works on video sites in your browser: YouTube, Netflix, Prime Video, TVer, ABEMA and more.<span class="need">Chrome, or Firefox 142 and later</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade#readme">How to install</a>
+          </li>
+          <li class="platform">
+            <h3>Mac app</h3>
+            <p>Works on the sound of any app on your Mac: QuickTime, VLC, your browser and more. Lives in the menu bar.<span class="need">Apple silicon Mac, macOS 14.2 or later</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-mac/releases/latest">Download</a>
+          </li>
+          <li class="platform">
+            <h3>Windows app</h3>
+            <p>Works on everything your PC plays. Lives in the system tray and needs no extra install such as .NET.<span class="need">A PC with only one audio output needs the free VB-CABLE</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-windows/releases/latest">Download</a>
+          </li>
+          <li class="platform" data-state="soon">
+            <h3>Android app<span class="badge">Coming soon</span></h3>
+            <p>Softens pause and resume in the music and video apps on your phone. We are getting it ready for Google Play.</p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-android">Follow progress</a>
+          </li>
+        </ul>
+        <p class="recommend">On a Mac, the app is the better choice: it also works outside the browser.</p>
+      </section>
+
+      <section aria-labelledby="facts">
+        <h2 id="facts">What it does, and what it can't</h2>
+        <div class="facts">
+          <div>
+            <h3>You choose how long the fade is</h3>
+            <p>The extension fades out and in separately, from 100 to 3000 ms. The Mac and Windows apps let you pick a preset and the fade-in length.</p>
+          </div>
+          <div>
+            <h3>It fades before the sound stops, by looking back</h3>
+            <p>The Mac and Windows apps cannot intercept another app's pause. So they hold the audio back by 0.1 to 0.35 seconds and, the moment it stops, apply the fade to the sound just before. If lip-sync matters, pick a shorter preset.</p>
+          </div>
+          <div>
+            <h3>Calls and speech synthesis are left alone (Mac)</h3>
+            <p>While a microphone is in use, the fade is switched off. So is audio that begins and ends gently, like synthesized speech, so the first and last syllables are never weakened.</p>
+          </div>
+          <div>
+            <h3>Free, no ads, and your audio stays put</h3>
+            <p>None of the versions store or send your audio. The source code is public on GitHub.</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="faq">
+        <h2 id="faq">If something goes wrong</h2>
+        <details>
+          <summary>The Mac says it can't open the app</summary>
+          <p>The app is made by an individual and is not notarized by Apple. Right-click the app, choose Open, then click Open again. You only need to do this once.</p>
+        </details>
+        <details>
+          <summary>Windows says "Windows protected your PC"</summary>
+          <p>The exe is not code-signed. Click "More info", then "Run anyway".</p>
+        </details>
+        <details>
+          <summary>Windows asks me to install VB-CABLE</summary>
+          <p>The app needs one unused audio output to move the original sound out of the way. A PC with two or more outputs, such as speakers and headphones, needs nothing extra. With only one output, install the free virtual cable VB-CABLE; the app's setup screen walks you through it.</p>
+        </details>
+        <details>
+          <summary>The fade doesn't work on a site</summary>
+          <p>The extension only runs on the sites in its supported list, and it can't work where a site ignores volume changes. The Mac and Windows apps don't depend on the site: they act on the overall sound.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <ul>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade">Extension (GitHub)</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-mac">Mac (GitHub)</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-windows">Windows (GitHub)</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-android">Android (GitHub)</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade/blob/main/PRIVACY.md">Privacy</a></li>
+      </ul>
+      <p>By Blackphi6 (<a href="https://x.com/blackphi6">@blackphi6</a>)</p>
+    </footer>
+  </div>
+  <script src="../assets/demo.js" defer></script>
+</body>
+</html>

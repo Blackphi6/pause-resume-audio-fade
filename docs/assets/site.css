@@ -1,0 +1,142 @@
+/* Pause Resume Audio Fade — LP
+   色: 冷たい紙色の地に、アイコンの青を 1 色だけ。赤は「ブツッ」という切断を示すときだけ使う */
+:root {
+  --paper: #f3f6fb;
+  --panel: #ffffff;
+  --ink: #0c1a2f;
+  --ink-soft: #4a5b73;
+  --line: #d3deee;
+  --blue: #1769e0;
+  --blue-deep: #0a4fb8;
+  --blue-wash: #e3eefc;
+  --cut: #d9363e;
+  --radius: 14px;
+  --wrap: 62rem;
+  --font: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", "Yu Gothic UI", "Yu Gothic", Meiryo, system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 1rem;
+  line-height: 1.85;
+  letter-spacing: 0.01em;
+}
+img { max-width: 100%; display: block; }
+a { color: var(--blue-deep); text-underline-offset: 0.2em; }
+a:hover { color: var(--blue); }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+
+.wrap { width: min(100% - 2rem, var(--wrap)); margin-inline: auto; }
+
+/* ヘッダー */
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.1rem; }
+.brand { display: flex; align-items: center; gap: 0.7rem; color: var(--ink); text-decoration: none; font-weight: 700; letter-spacing: 0.02em; }
+.brand img { width: 34px; height: 34px; border-radius: 8px; }
+.lang { display: flex; gap: 0.25rem; font-size: 0.9rem; }
+.lang a, .lang span { padding: 0.25rem 0.7rem; border-radius: 999px; text-decoration: none; color: var(--ink-soft); white-space: nowrap; }
+.lang [aria-current="page"] { background: var(--ink); color: #fff; }
+
+/* ヒーロー */
+.hero { padding-block: clamp(1.5rem, 5vw, 3.5rem) clamp(2rem, 5vw, 3.5rem); }
+h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 6.2vw, 4rem);
+  line-height: 1.22;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  max-width: 16em;
+}
+.lead { margin: 1.4rem 0 0; max-width: 34em; font-size: clamp(1.02rem, 2vw, 1.2rem); color: var(--ink-soft); }
+
+/* 聞き比べ */
+.demo {
+  margin-top: clamp(1.8rem, 4vw, 2.8rem);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  padding: clamp(0.9rem, 2.5vw, 1.4rem);
+}
+.stage { position: relative; background: var(--paper); border-radius: var(--radius); overflow: hidden; }
+.stage canvas { display: block; width: 100%; height: clamp(150px, 26vw, 230px); }
+.stage-note {
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem;
+  text-align: center; font-size: 0.95rem; pointer-events: none;
+}
+.stage-note span { background: var(--panel); color: var(--ink); padding: 0.45rem 1.1rem; border-radius: 999px; border: 1px solid var(--line); }
+.stage-note[hidden] { display: none; }
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem 1.6rem; margin-top: 1rem; }
+.btn-main {
+  appearance: none; border: 0; cursor: pointer;
+  background: var(--blue); color: #fff; font: inherit; font-weight: 700;
+  min-width: 8.5rem; padding: 0.75rem 1.6rem; border-radius: 999px;
+}
+.btn-main:hover { background: var(--blue-deep); }
+.field { display: flex; align-items: center; gap: 0.6rem; font-size: 0.95rem; }
+.field > span { color: var(--ink-soft); }
+.seg { display: inline-flex; background: var(--blue-wash); border-radius: 999px; padding: 3px; }
+.seg button {
+  appearance: none; border: 0; cursor: pointer; font: inherit; font-size: 0.95rem;
+  padding: 0.4rem 1rem; border-radius: 999px; background: transparent; color: var(--ink);
+}
+.seg button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+.field input[type="range"] { width: 9rem; accent-color: var(--blue); }
+.field output { min-width: 4.2em; font-variant-numeric: tabular-nums; }
+.status { margin: 0.9rem 0 0; color: var(--ink); font-weight: 600; }
+.status:empty { display: none; }
+.hint { margin: 0.2rem 0 0; font-size: 0.88rem; color: var(--ink-soft); }
+
+/* セクション共通 */
+section { padding-block: clamp(2rem, 5vw, 3.5rem); }
+h2 { margin: 0 0 1.4rem; font-size: clamp(1.4rem, 3.4vw, 1.9rem); line-height: 1.4; font-weight: 800; letter-spacing: -0.01em; }
+.sub { margin: -0.6rem 0 1.4rem; color: var(--ink-soft); max-width: 40em; }
+
+/* 使えるところ: 罫線で区切った行。入手できるものと準備中を、見た目で分ける */
+.platforms { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--ink); }
+.platform {
+  display: grid; grid-template-columns: minmax(9rem, 12rem) 1fr auto; gap: 0.4rem 1.6rem; align-items: start;
+  padding-block: 1.3rem; border-bottom: 1px solid var(--line);
+}
+.platform h3 { margin: 0; font-size: 1.15rem; line-height: 1.5; font-weight: 800; }
+.platform p { margin: 0; }
+.platform .need { display: block; margin-top: 0.25rem; font-size: 0.9rem; color: var(--ink-soft); }
+.platform .go { align-self: center; }
+.btn {
+  display: inline-block; padding: 0.55rem 1.25rem; border-radius: 999px; text-decoration: none; white-space: nowrap;
+  background: var(--ink); color: #fff; font-weight: 700; font-size: 0.95rem;
+}
+.btn:hover { background: var(--blue-deep); color: #fff; }
+.platform[data-state="soon"] h3, .platform[data-state="soon"] p { color: var(--ink-soft); }
+.platform[data-state="soon"] .btn { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.platform[data-state="soon"] .btn:hover { background: var(--blue-wash); color: var(--ink); }
+.badge { display: inline-block; margin-left: 0.5rem; padding: 0.05rem 0.6rem; border-radius: 999px; background: var(--blue-wash); color: var(--blue-deep); font-size: 0.8rem; font-weight: 700; vertical-align: 0.1em; }
+.recommend { margin: 1.2rem 0 0; padding: 0.9rem 1.1rem; background: var(--blue-wash); border-radius: var(--radius); max-width: 44em; }
+
+/* できることと、限界 */
+.facts { display: grid; gap: 1.6rem 3rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.facts h3 { margin: 0 0 0.3rem; font-size: 1.05rem; line-height: 1.55; font-weight: 800; }
+.facts p { margin: 0; color: var(--ink-soft); max-width: 30em; }
+
+/* よくある質問 */
+details { border-top: 1px solid var(--line); padding-block: 0.95rem; }
+details:last-of-type { border-bottom: 1px solid var(--line); }
+summary { cursor: pointer; font-weight: 700; list-style-position: outside; }
+details p { margin: 0.6rem 0 0; color: var(--ink-soft); max-width: 44em; }
+
+/* フッター */
+footer { padding-block: 2rem 3.2rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.92rem; }
+footer ul { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+footer p { margin: 0; }
+
+@media (max-width: 52rem) {
+  .platform { grid-template-columns: 1fr; }
+  .platform .go { align-self: start; margin-top: 0.5rem; }
+  .facts { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

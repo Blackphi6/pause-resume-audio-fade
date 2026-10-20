@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pause Resume Audio Fade — 一時停止の「ブツッ」を、なめらかに</title>
+  <meta name="description" content="動画や音楽を止める・再開するたびに、音量をなめらかに下げて上げる無料のアプリと拡張機能。Chrome・Firefox、Mac、Windows に対応。広告なし、音声は保存も送信もしません。">
+  <link rel="icon" href="assets/icon-48.png">
+  <link rel="canonical" href="https://blackphi6.github.io/pause-resume-audio-fade/">
+  <link rel="alternate" hreflang="en" href="https://blackphi6.github.io/pause-resume-audio-fade/en/">
+  <link rel="alternate" hreflang="ja" href="https://blackphi6.github.io/pause-resume-audio-fade/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Pause Resume Audio Fade — 一時停止の「ブツッ」を、なめらかに">
+  <meta property="og:description" content="動画や音楽を止める・再開するたびに、音量をなめらかに下げて上げる無料のアプリと拡張機能。">
+  <meta property="og:url" content="https://blackphi6.github.io/pause-resume-audio-fade/">
+  <meta property="og:image" content="https://blackphi6.github.io/pause-resume-audio-fade/assets/ogp.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="./"><img src="assets/icon-128.png" alt="" width="34" height="34">Pause Resume Audio Fade</a>
+      <nav class="lang" aria-label="言語">
+        <span aria-current="page">日本語</span>
+        <a href="en/" hreflang="en" lang="en">English</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="hero">
+        <h1>一時停止の「ブツッ」を、<br>なめらかに。</h1>
+        <p class="lead">動画や音楽を止めるたびに音量を下げ、再開するたびに上げます。急に切れる音も、急に戻る音も、なくなります。</p>
+
+        <div class="demo" id="demo" data-text='{"play":"再生","pause":"一時停止","withFade":"フェードあり（{ms} ms）","withoutFade":"フェードなし","paused":"{kind}で一時停止しました","resumed":"{kind}で再生しました"}'>
+          <div class="stage">
+            <canvas aria-hidden="true"></canvas>
+            <p class="stage-note" data-note><span>「再生」を押すと、やわらかい和音が鳴ります</span></p>
+          </div>
+          <div class="controls">
+            <button class="btn-main" type="button" data-play>再生</button>
+            <div class="field" role="group" aria-label="フェード">
+              <span>フェード</span>
+              <div class="seg">
+                <button type="button" data-fade="on" aria-pressed="true">あり</button>
+                <button type="button" data-fade="off" aria-pressed="false">なし</button>
+              </div>
+            </div>
+            <label class="field">
+              <span>長さ</span>
+              <input type="range" min="100" max="1000" step="50" value="350" data-length>
+              <output data-length-out>350 ms</output>
+            </label>
+          </div>
+          <p class="status" role="status" aria-live="polite" data-status></p>
+          <p class="hint">再生してから「一時停止」を押し、フェードを「なし」に切り替えて、もう一度止めてみてください。止まる瞬間が、赤い棒で見えます。音量を下げてから試してください。</p>
+        </div>
+      </div>
+
+      <section aria-labelledby="where">
+        <h2 id="where">どれを使えばいい？</h2>
+        <ul class="platforms">
+          <li class="platform">
+            <h3>Chrome / Firefox 拡張機能</h3>
+            <p>ブラウザの動画サイトで効きます。YouTube、Netflix、Prime Video、TVer、ABEMA など。<span class="need">Chrome、Firefox 142 以降</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade#readme">インストール方法</a>
+          </li>
+          <li class="platform">
+            <h3>Mac アプリ</h3>
+            <p>Mac のどのアプリの音にも効きます。QuickTime、VLC、ブラウザなど。メニューバーに常駐します。<span class="need">Apple シリコンの Mac、macOS 14.2 以降</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-mac/releases/latest">ダウンロード</a>
+          </li>
+          <li class="platform">
+            <h3>Windows アプリ</h3>
+            <p>PC から鳴る音全体に効きます。タスクトレイに常駐し、.NET などの追加インストールは要りません。<span class="need">出力が 1 つだけの PC では、無料の VB-CABLE が必要です</span></p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-windows/releases/latest">ダウンロード</a>
+          </li>
+          <li class="platform" data-state="soon">
+            <h3>Android アプリ<span class="badge">準備中</span></h3>
+            <p>スマホの音楽・動画アプリの、一時停止と再開に効きます。Google Play での公開に向けて準備しています。</p>
+            <a class="btn go" href="https://github.com/Blackphi6/pause-resume-audio-fade-android">進み具合を見る</a>
+          </li>
+        </ul>
+        <p class="recommend">Mac をお使いなら、ブラウザ以外の音にも効くので、拡張機能より Mac アプリがおすすめです。</p>
+      </section>
+
+      <section aria-labelledby="facts">
+        <h2 id="facts">できることと、限界</h2>
+        <div class="facts">
+          <div>
+            <h3>フェードの長さは、自分で決められる</h3>
+            <p>拡張機能は 100〜3000 ms の範囲で、フェードアウトとフェードインを別々に。Mac 版と Windows 版は、プリセットとフェードインの長さを選べます。</p>
+          </div>
+          <div>
+            <h3>止まる「前」にさかのぼって、フェードする</h3>
+            <p>Mac 版と Windows 版は、他のアプリの一時停止を横取りできません。そのため、音を 0.1〜0.35 秒遅らせて、止まった瞬間に直前の音へフェードを掛けます。映像との音ズレが気になるときは、短いプリセットを選んでください。</p>
+          </div>
+          <div>
+            <h3>通話と読み上げ音声には、掛けない（Mac 版）</h3>
+            <p>マイクが使われている間は、フェードを止めます。読み上げ音声のように、滑らかに始まって終わる音にも掛けません。文頭や語尾が弱くならないためです。</p>
+          </div>
+          <div>
+            <h3>無料で、広告なし。音声は外に出ません</h3>
+            <p>どの版も、音声を保存も送信もしません。ソースコードは GitHub で公開しています。</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="faq">
+        <h2 id="faq">困ったとき</h2>
+        <details>
+          <summary>Mac で「開けません」と出る</summary>
+          <p>個人開発で、Apple の公証を受けていないための表示です。アプリを右クリックして「開く」を選び、もう一度「開く」を押してください。初回だけです。</p>
+        </details>
+        <details>
+          <summary>Windows で「WindowsによってPCが保護されました」と出る</summary>
+          <p>署名していない exe のための表示です。「詳細情報」を押してから「実行」を押してください。</p>
+        </details>
+        <details>
+          <summary>Windows で VB-CABLE が必要と言われた</summary>
+          <p>元の音を鳴らさずに逃がすための「使っていない出力」が、1 つ必要です。スピーカーとヘッドホンなど、出力が 2 つ以上ある PC では、何も入れずに使えます。出力が 1 つだけの PC では、無料の仮想ケーブル VB-CABLE を入れてください。アプリの案内画面が手順を出します。</p>
+        </details>
+        <details>
+          <summary>フェードが掛からないサイトがある</summary>
+          <p>拡張機能は、対応サイトの一覧にあるサイトでだけ動きます。サイト側が音量の変更を受け付けない場合も、効きません。Mac 版と Windows 版は、サイトを選ばず、全体の音に効きます。</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <ul>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade">拡張機能（GitHub）</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-mac">Mac（GitHub）</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-windows">Windows（GitHub）</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade-android">Android（GitHub）</a></li>
+        <li><a href="https://github.com/Blackphi6/pause-resume-audio-fade/blob/main/PRIVACY.md">プライバシー</a></li>
+      </ul>
+      <p>作者: Blackphi6（<a href="https://x.com/blackphi6">@blackphi6</a>）</p>
+    </footer>
+  </div>
+  <script src="assets/demo.js" defer></script>
+</body>
+</html>
