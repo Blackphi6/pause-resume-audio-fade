@@ -133,6 +133,8 @@ details p { margin: 0.6rem 0 0; color: var(--ink-soft); max-width: 44em; }
 footer { padding-block: 2rem 3.2rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.92rem; }
 footer ul { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
 footer p { margin: 0; }
+footer .featured { margin-top: 1.4rem; }
+footer .featured img { width: 200px; height: auto; }
 
 @media (max-width: 52rem) {
   .platform { grid-template-columns: 1fr; }
