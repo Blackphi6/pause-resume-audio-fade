@@ -127,3 +127,7 @@ Chrome 拡張とは別リポジトリで、Apple Silicon Mac 向けのメニュ�
 - TVer / ABEMA でフェードが効かない不具合を修正
 - ポップアップとストア説明に対応サイトを明記
 
+
+## ライセンス
+
+[MIT License](LICENSE)
